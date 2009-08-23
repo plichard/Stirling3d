@@ -10,4 +10,12 @@ main: func {
 	d1 show
 	d1 pos
 	
+	v1 = d1 pos : Vector3d
+	v1 print()
+	/* Cannot write
+	 * d1 pos print()
+	 * must use workarround above
+	 * (Calling member function print() in an 
+	 * expression MemberAccess which type hasn't been resolved yet!)
+	 */
 }
