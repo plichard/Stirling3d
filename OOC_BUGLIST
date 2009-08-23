@@ -1,2 +1,2 @@
-must keep ; in file gfx.Drawable at 12:30 or get an array out of bound exeption from compiler  [PENDING]
-cannot access member object pos in test1: 11:7, get a nullPointerException from compiler		   [PENDING]
+must keep ; in file gfx.Drawable at 12:30 or get an array out of bound exeption from compiler  [FIXED in master-7700722]
+cannot access member object pos in test1: 11:7, get a nullPointerException from compiler       [FIXED in master-7700722]
