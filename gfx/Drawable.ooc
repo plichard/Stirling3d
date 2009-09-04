@@ -1,6 +1,6 @@
 import math.Vector3d
 
-Drawable: /*abstract*/ class {
+Drawable: abstract class {
 	
 	/* Self explanatory =) */
 	show := true
@@ -8,11 +8,11 @@ Drawable: /*abstract*/ class {
 	/* Draw axes for every drawable?? */
 	axes = false : static Bool
 	
-	pos := new Vector3d(0,0,0)  //position of the drawable
-	rot := new Vector3d(0,0,0)  //rotation of the drawable arround the 3 axes
-	scl := new Vector3d(1,1,1)  //scale of the drawable
+	pos := Vector3d new(0,0,0)  //position of the drawable
+	rot := Vector3d new(0,0,0)  //rotation of the drawable arround the 3 axes
+	scl := Vector3d new(1,1,1)  //scale of the drawable
 	
-	new: func {
+	init: func() {
 		
 	}
 	

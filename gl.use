@@ -1,0 +1,4 @@
+Name: OpenGL
+Description: OpenGL
+Pkgs: gl
+Includes: GL/gl.h

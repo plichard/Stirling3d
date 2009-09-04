@@ -1,0 +1,5 @@
+Name: GLU
+Description: glu
+Pkgs: glu
+Includes: GL/glu.h
+

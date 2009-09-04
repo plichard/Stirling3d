@@ -1,21 +1,20 @@
-import gfx.Drawable
+import gfx.[Drawable, Screen, Scene]
 import loop.Scheduler
 import loop.Timeout
 import math.Vector3d
 
+use sdl
+import sdl.[Sdl, Video, Event]
+
+getchar: extern(getchar) func(...)
+usleep: extern(usleep) func(...)
+
 main: func {
 	
-	d1 := new Drawable
-	d1 draw()
-	d1 show
-	d1 pos
-	
-	v1 = d1 pos : Vector3d
-	v1 print()
-	/* Cannot write
-	 * d1 pos print()
-	 * must use workarround above
-	 * (Calling member function print() in an 
-	 * expression MemberAccess which type hasn't been resolved yet!)
-	 */
+	screen := Screen new(800,600,32)
+	screen title("beauuuutiful window!!!!")
+	scene := Scene new()
+	usleep(1000000)
+	d1 := Drawable new()
+    d1 pos print()
 }

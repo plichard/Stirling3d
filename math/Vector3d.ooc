@@ -4,7 +4,7 @@ Vector3d: class {
 	
 	x = 0, y = 0, z = 0 : Double
 	
-	new: func(=x,=y,=z) {
+	init: func(=x,=y,=z) {
 		
 	}
 	

@@ -13,7 +13,7 @@ Timeout: class {
 	/* Accumulates passed time */
 	accumulator = 0: Long
 	
-	new: func(=_call, =timeout)
+	//new: func(=_call, =timeout)
 	
 	/* call _call if the timeout has passed */
 	call: func(delta: Int) {
