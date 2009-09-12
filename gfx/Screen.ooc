@@ -13,9 +13,9 @@ Screen: class {
 	
 	setRes: func(=x,=y,=bpp) {
 		SDLVideo setMode(x,y,bpp,OPENGL)
-		GL matrixMode( PROJECTION );
-		GL loadIdentity();
-		GLU perspective(70,x/y as Double,0.001,100);
+		GL matrixMode(PROJECTION )
+		GL loadIdentity()
+		GLU perspective(70,x/y as Double,0.001,100)
 		GL viewport(0,0,x,y)
 		GL enable(DEPTH_TEST);
 		//glEnable(GL_TEXTURE_2D);

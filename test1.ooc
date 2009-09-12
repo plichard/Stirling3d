@@ -11,10 +11,10 @@ usleep: extern(usleep) func(...)
 
 main: func {
 	
-	screen := Screen new(800,600,32)
-	screen title("beauuuutiful window!!!!")
-	scene := Scene new()
-	usleep(1000000)
-	d1 := Drawable new()
-    d1 pos print()
+	//screen := Screen new(800,600,32)
+	//screen title("beauuuutiful window!!!!")
+	//scene := Scene new()
+	//usleep(1000000)
+	//d1 := Drawable new()
+   // d1 pos print()
 }
