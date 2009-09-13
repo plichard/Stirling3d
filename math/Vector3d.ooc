@@ -13,6 +13,10 @@ Vector3d: class {
 	}
 }
 
+operator + (a,b: Vector3d) -> Vector3d{
+	return Vector3d new(a x + b x, a y + b y,a z + b z)
+}
+
 /*
 main: func {
 	
