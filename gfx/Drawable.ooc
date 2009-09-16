@@ -1,3 +1,5 @@
+use gl
+import gl.Gl
 import math.Vector3d
 
 Drawable: abstract class {
@@ -8,7 +10,7 @@ Drawable: abstract class {
 	/* Draw axes for every drawable?? */
 	axes = false : static Bool
 	
-	pos := Vector3d new(0,0,0)  //position of the drawable
+	pos := Vector3d new(0,0,0)  as Vector3d//position of the drawable
 	rot := Vector3d new(0,0,0)  //rotation of the drawable arround the 3 axes
 	scl := Vector3d new(1,1,1)  //scale of the drawable
 	
@@ -20,6 +22,8 @@ Drawable: abstract class {
 	draw: func {
 		if(show) {
 			/* TODO: Apply position, rotation and scale */
+			GL translated(pos x, pos y, pos z)
+			printf("calling specific _draw...\n")
 			_draw()
 			if(axes) {
 				_drawAxes()
@@ -31,7 +35,7 @@ Drawable: abstract class {
 	 * -> the real drawing function
 	 */
 	_draw: func {
-		printf("Drawing something...\n")
+		printf("Empty drawable trying to display itself, strange...\n")
 	}
 	
 	/* Draws centered axes on local coordinates */

@@ -1,26 +1,38 @@
-use gl
+use gl,glu
 import gl.Gl
+import glu.Glu
 import math.Vector3d
+import gfx.Drawable
 
-Particle: class {
+Particle: class extends Drawable{
+	
+	params = null : static Quadric
 	
 	life := 1000
-	pos := Vector3d new(0,0,0)
-	vel := Vector3d new(0,0,4)
+	vel := Vector3d new(0,0,4) as Vector3d
 	
 	isAlive: func -> Bool {
-		if(life > 0)
+		if(life > 0){
 			return true
-		else{
-			life = 0
-			return false
+		}
+		
+		life = 0
+		return false	
+	}
+	
+	init: func ~lifePosVal (=life, =pos, =vel) {
+		if(!params){
+			params = GLU newQuadric()
 		}
 	}
 	
-	init: func(=life, =pos, =vel) {
-	}
 	update: func {
 		pos = pos + vel
 		life-=1
+	}
+	
+	_draw: func {
+		printf("Drawing da sphere!!!")
+		GLU sphere(params, 1, 10 ,10)
 	}
 }
