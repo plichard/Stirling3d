@@ -1,7 +1,7 @@
 use sdl,gl,glu
-import sdl.[Sdl, Video]
-import gl.Gl
-import glu.Glu
+import sdl/[Sdl, Video]
+import gl/Gl
+import glu/Glu
 
 Screen: class {
 	x, y, bpp : Int

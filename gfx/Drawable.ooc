@@ -1,6 +1,6 @@
 use gl
-import gl.Gl
-import math.Vector3d
+import gl/Gl
+import math/Vector3d
 
 Drawable: abstract class {
 	

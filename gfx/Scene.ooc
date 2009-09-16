@@ -1,8 +1,9 @@
 use gl,glu,sdl
-import gl.Gl
-import glu.Glu
-import gfx.[Drawable, Particle]
-import sdl.[Sdl, Video]
+import gl/Gl
+import glu/Glu
+import gfx/[Drawable, Particle]
+import sdl/[Sdl, Video]
+import math/ChainedList
 
 //usleep: extern proto func(UInt)
 

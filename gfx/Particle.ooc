@@ -1,8 +1,8 @@
 use gl,glu
-import gl.Gl
-import glu.Glu
-import math.Vector3d
-import gfx.Drawable
+import gl/Gl
+import glu/Glu
+import math/Vector3d
+import gfx/Drawable
 
 Particle: class extends Drawable{
 	
@@ -24,6 +24,8 @@ Particle: class extends Drawable{
 		if(!params){
 			params = GLU newQuadric()
 		}
+	}
+	init : func {
 	}
 	
 	update: func {

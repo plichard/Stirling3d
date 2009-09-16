@@ -1,9 +1,9 @@
 use gl,glu
-import gl.Gl
-import glu.Glu
-import math.Vector3d
-import gfx.[Screen, Particle, Scene]
-import sdl.[Sdl, Video]
+import gl/Gl
+import glu/Glu
+import math/Vector3d
+import gfx/[Screen, Particle, Scene]
+import sdl/[Sdl, Video]
 
 usleep: extern proto func(UInt)
 

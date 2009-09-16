@@ -1,5 +1,5 @@
 use sdl
-import sdl.Sdl
+import sdl/Sdl
 
 SDLVideo: cover {
 	

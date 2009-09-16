@@ -1,6 +1,6 @@
 use sdl
 
-import lang.String
+import lang/String
 
 	
 	INIT_TIMER : extern(SDL_INIT_TIMER) const Int
