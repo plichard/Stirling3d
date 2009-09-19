@@ -51,5 +51,6 @@ SDL: cover {
 	loadObject: extern(SDL_LoadObject) static func(const String) -> Void*
 	loadFunction: extern(SDL_LoadFunction) static func(Void* , const String) -> Void*
 	unloadObject: extern(SDL_UnloadObject) static func(Void*)
+	getTicks: extern(SDL_GetTicks) static func()
 	//linkedVersion: extern(SDL_Linked_Version) static func() -> const SDL_version*
 }

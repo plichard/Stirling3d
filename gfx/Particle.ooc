@@ -9,7 +9,7 @@ Particle: class extends Drawable{
 	params = null : static Quadric
 	
 	life := 1000
-	vel := Vector3d new(0,0,4) as Vector3d
+	vel := Vector3d new(0,0,1) as Vector3d
 	
 	isAlive: func -> Bool {
 		if(life > 0){
@@ -25,8 +25,6 @@ Particle: class extends Drawable{
 			params = GLU newQuadric()
 		}
 	}
-	init : func {
-	}
 	
 	update: func {
 		pos = pos + vel
@@ -34,7 +32,7 @@ Particle: class extends Drawable{
 	}
 	
 	_draw: func {
-		printf("Drawing da sphere!!!")
+		//printf("Drawing da sphere!!!")
 		GLU sphere(params, 1, 10 ,10)
 	}
 }

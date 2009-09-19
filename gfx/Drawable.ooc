@@ -23,7 +23,7 @@ Drawable: abstract class {
 		if(show) {
 			/* TODO: Apply position, rotation and scale */
 			GL translated(pos x, pos y, pos z)
-			printf("calling specific _draw...\n")
+			//printf("calling specific _draw...\n")
 			_draw()
 			if(axes) {
 				_drawAxes()
