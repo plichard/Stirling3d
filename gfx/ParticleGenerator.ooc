@@ -51,17 +51,17 @@ ParticleGenerator: class extends Drawable{
 			nvel := vel clone()
 			nlife := life
 			if(dv x) {
-				nvel x = vel x + rand() % (dv x as Int) - 2 * dv x 
+				nvel x = vel x + rand() % (2*dv x as Int) - dv x 
 			}
 			if(dv y) {
-				nvel y = vel y + rand() % (dv y as Int) - 2 * dv y 
+				nvel y = vel y + rand() % (2*dv y as Int) - dv y 
 			}
 			if(dv z) {
-				nvel z = vel z + rand() % (dv z as Int) - 2 * dv z 
+				nvel z = vel z + rand() % (2*dv z as Int) - dv z 
 			}
 			
 			if(dlife) {
-				nlife += rand() % dlife - 2 * dlife
+				nlife += rand() % dlife -   dlife
 			}
 			
 			
