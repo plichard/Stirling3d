@@ -1,5 +1,5 @@
-use glew,glu
-import glew,glu/Glu
+use glew, glu
+import glew, glu/Glu
 import gfx/[Drawable, Particle]
 import sdl/[Sdl, Video]
 import structs/LinkedList
