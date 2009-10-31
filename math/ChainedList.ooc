@@ -76,7 +76,7 @@ ChainedList: class<T> {
 		current = current next
 		
 		while(current != null){
-			//( i + ": " + current data) println()
+			( i + ": " + current data) println()
 			i += 1
 			current = current next
 		}
@@ -101,27 +101,9 @@ Node: class<T>{
 	init: func {
 		prev = null
 		next = null
-		data = null
 	}
 	
-	init: func ~withParams(p,n: Node<T>*, d: T)  {
-		prev = p
-		next = n
-		data = d
-	}
+	init: func ~withParams(=prev, =next, = data)  {}
 	
 }
 
-
-main: func {
-	list := ChainedList<String> new()
-	for(i in 0..10){
-		list add(i repr())
-	}
-	list insert("PLOOOOP",0)
-	list insert("twitwi",5)
-	list insert("twitwi II: le retour",5)
-	list print(); "--------------------------------------------------" println()
-	list del(6)
-	list print(); "--------------------------------------------------" println()
-}

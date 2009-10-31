@@ -1,6 +1,6 @@
-use sdl,gl,glu
+use sdl,glew,glu
 import sdl/[Sdl, Video]
-import gl/Gl
+import glew
 import glu/Glu
 
 Screen: class {
@@ -13,11 +13,11 @@ Screen: class {
 	
 	setRes: func(=x,=y,=bpp) {
 		SDLVideo setMode(x,y,bpp,OPENGL)
-		GL matrixMode(PROJECTION )
-		GL loadIdentity()
-		GLU perspective(70,x/y as Double,0.001,100)
-		GL viewport(0,0,x,y)
-		GL enable(DEPTH_TEST);
+		glMatrixMode(GL_PROJECTION )
+		glLoadIdentity()
+		gluPerspective(70,x/y as Double,0.001,1000)
+		glViewport(0,0,x,y)
+		glEnable(GL_DEPTH_TEST);
 		//glEnable(GL_TEXTURE_2D);
 	}
 	

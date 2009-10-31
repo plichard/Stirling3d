@@ -1,48 +1,45 @@
-use gl,glu,sdl
-import gl/Gl
-import glu/Glu
+use glew,glu
+import glew,glu/Glu
 import gfx/[Drawable, Particle]
 import sdl/[Sdl, Video]
+import structs/LinkedList
 
 usleep: extern proto func(UInt)
 
 Scene: class {
-	d1: Drawable
+	drawables := LinkedList<Drawable> new()
+	
 	init: func(){
-		
 	}
 	
 	clear: func() {
 	}
 	
 	draw: func(){
-		GL clear( COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT )
-		GL matrixMode( MODELVIEW )
-		GL loadIdentity( )
-		GLU lookAt(20,20,20,0,0,0,0,0,1)
+		glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
+		glMatrixMode( GL_MODELVIEW )
+		glLoadIdentity( )
+		gluLookAt(100,0,0,0,0,0,0,0,1)
 		
-		if(d1){
-			d1 draw()
-			printf("d1 show=%s\n",d1 show repr())
-			printf("d1 draw()...\n")
+		for(d in drawables) {
+			d as Drawable draw()
 		}
 		
 		
-		GL flush()
+		glFlush()
 		SDLVideo glSwapBuffers()
 	}
 	
-	loop: func {
-		while(true){
-			(d1 as Particle) update()
-			draw()
-			d1 pos print()
-			usleep(30000)
+	
+	update: func {
+		iter := drawables iterator()
+		while(iter hasNext()) {
+			iter next() as Drawable update(1)
 		}
 	}
 	
-	add: func(d: Drawable){
-		d1 = d
+	add: func(d: Drawable) {
+		drawables add(d)
 	}
 	
 }

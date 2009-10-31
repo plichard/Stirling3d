@@ -1,10 +1,10 @@
-import gfx.[Drawable, Screen, Scene]
-import loop.Scheduler
-import loop.Timeout
-import math.Vector3d
+import gfx/[Drawable, Screen, Scene]
+import loop/Scheduler
+import loop/Timeout
+import math/Vector3d
 
 use sdl
-import sdl.[Sdl, Video, Event]
+import sdl/[Sdl, Video, Event]
 
 getchar: extern(getchar) func(...)
 usleep: extern(usleep) func(...)

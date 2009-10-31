@@ -1,6 +1,5 @@
 use sdl
 
-import lang/String
 
 	
 	INIT_TIMER : extern(SDL_INIT_TIMER) const Int
@@ -35,6 +34,8 @@ import lang/String
 	PREALLOC: extern(SDL_PREALLOC)		const Int/* Surface uses preallocated memory */
 	
 	Surface: cover from SDL_Surface
+	
+	SDL_QUIT: extern(SDL_QUIT) 			const Int
  
 SDL: cover {
 	
@@ -51,6 +52,6 @@ SDL: cover {
 	loadObject: extern(SDL_LoadObject) static func(const String) -> Void*
 	loadFunction: extern(SDL_LoadFunction) static func(Void* , const String) -> Void*
 	unloadObject: extern(SDL_UnloadObject) static func(Void*)
-	getTicks: extern(SDL_GetTicks) static func()
+	getTicks: extern(SDL_GetTicks) static func() -> Int
 	//linkedVersion: extern(SDL_Linked_Version) static func() -> const SDL_version*
 }
