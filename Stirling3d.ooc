@@ -8,6 +8,7 @@ Stirling3d: class {
 	scene: Scene
 	screen: Screen
 	isRunning := false
+	pTime = 0, cTime = 0: UInt32 
 
 	init: func {}
 	
@@ -38,10 +39,16 @@ Stirling3d: class {
 	mainLoop: func {
 		isRunning = true
 		while(isRunning){
-			handleInput()
-			scene update()
-			scene draw()
-			usleep(30000)
+			cTime = SDL getTicks()
+			if(cTime - pTime > 30) {
+				handleInput()
+				scene update()
+				scene draw()
+				pTime = cTime
+			}
+			else {
+				usleep((30 - cTime  + pTime) * 1000 )
+			}		
 		}
 	}
 }

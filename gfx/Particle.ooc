@@ -6,6 +6,7 @@ import gfx/Drawable
 Particle: class extends Drawable{
 	
 	params = null : static Quadric
+	dlist : GLuint
 	
 	life := 1000
 	vel := Vector3d new(0,0,1) as Vector3d
@@ -26,7 +27,10 @@ Particle: class extends Drawable{
 		if(!params){
 			params = gluNewQuadric()
 		}
-		
+		dlist = glGenLists(1)
+		glNewList(dlist, GL_COMPILE)
+			gluSphere(params, 5, 10 ,10)
+		glEndList()
 	}
 	
 	update: func(t: Int) {
@@ -51,6 +55,6 @@ Particle: class extends Drawable{
 	
 	_draw: func {
 		//printf("Drawing da sphere!!!")
-		gluSphere(params, 5, 10 ,10)
+		glCallList(dlist)
 	}
 }

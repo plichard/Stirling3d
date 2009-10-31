@@ -8,12 +8,12 @@ main: func {
 	engine := Stirling3d new()
 	engine window(800,600)
 	engine newScene()
-	engine drawAxes(true)
+	engine drawAxes(false)
 	pg := ParticleGenerator new (
-		400,100,    				//life, max life variation
-		100,50,						//spawn time, max spawn time variation
+		600,200,    				//life, max life variation
+		50,25,						//spawn time, max spawn time variation
 		Vector3d new(0,0,50), 		 //initial velocity
-		Vector3d new(0,20,0)			//maximal velocity variation
+		Vector3d new(30,30,30)			//maximal velocity variation
 	) 
 	pg addConstantForce(Vector3d new(0,0,-9.81))
 	

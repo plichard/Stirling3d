@@ -19,7 +19,7 @@ Scene: class {
 		glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
 		glMatrixMode( GL_MODELVIEW )
 		glLoadIdentity( )
-		gluLookAt(100,0,0,0,0,0,0,0,1)
+		gluLookAt(200,200,200,0,0,0,0,0,1)
 		
 		for(d in drawables) {
 			d as Drawable draw()
