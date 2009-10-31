@@ -36,6 +36,10 @@ use sdl
 	Surface: cover from SDL_Surface
 	
 	SDL_QUIT: extern(SDL_QUIT) 			const Int
+	SDL_KEYDOWN: extern(SDL_KEYDOWN) 	const Int
+	SDL_DISABLE: extern(SDL_DISABLE)	const Int
+	SDL_GRAB_ON: extern(SDL_GRAB_ON) 	const Int 
+	
  
 SDL: cover {
 	
@@ -53,5 +57,9 @@ SDL: cover {
 	loadFunction: extern(SDL_LoadFunction) static func(Void* , const String) -> Void*
 	unloadObject: extern(SDL_UnloadObject) static func(Void*)
 	getTicks: extern(SDL_GetTicks) static func() -> Int
+	enableKeyRepeat: extern(SDL_EnableKeyRepeat) static func(Int,Int)
+	showCursor: extern(SDL_ShowCursor) static func(Int)
+	warpMouse: extern(SDL_WarpMouse) static func(Int,Int)
+	WM_GrabInput: extern(SDL_WM_GrabInput) static func(Int)
 	//linkedVersion: extern(SDL_Linked_Version) static func() -> const SDL_version*
 }

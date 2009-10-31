@@ -1,6 +1,6 @@
 usleep: extern proto func(UInt)
 
-import gfx/[Scene,Screen,Drawable]
+import gfx/[Scene,Screen,Drawable, FreeFlyCamera]
 import sdl/[Event, Sdl]
 
 Stirling3d: class {
@@ -12,8 +12,8 @@ Stirling3d: class {
 
 	init: func {}
 	
-	window: func(x,y: Int) {
-		screen = Screen new(x,y,32)
+	window: func(x,y,bpp,flags: Int) {
+		screen = Screen new(x,y,bpp,flags)
 	}
 	
 	newScene: func {
@@ -30,7 +30,17 @@ Stirling3d: class {
 			match(event type)
             {
                 case SDL_QUIT =>  exit(0)
-            
+                
+                case SDL_KEYDOWN => { scene camera as FreeFlyCamera onKeyboard(event key) 
+					if(event key keysym sym == SDLK_c ) {
+						scene clear = !(scene clear)
+					}
+					else if (event key keysym sym == SDLK_ESCAPE) {
+						SDL quit()
+					}
+				}
+				
+				case SDL_MOUSEMOTION => scene camera as FreeFlyCamera onMouseMotion(event motion)
             }
 
 		}
