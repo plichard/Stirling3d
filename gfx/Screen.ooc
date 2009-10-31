@@ -7,8 +7,6 @@ Screen: class {
 	x, y, bpp, flags : Int
 	title := "Unnamed"
 	
-	
-	
 	lightAmbient : Double* = [0.5, 0.5, 0.5, 1.0]
 	lightDiffuse : Double* = [1.0, 1.0, 1.0, 1.0]
 	lightPos : Double* = [0.0, 0.0, 2.0, 1.0]

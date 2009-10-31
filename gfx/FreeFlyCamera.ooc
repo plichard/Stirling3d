@@ -39,6 +39,12 @@ FreeFlyCamera: class extends BasicCamera{
 		phi -= e yrel * sensivity
 		vectorsFromAngles()
 	}
+	look: func  {
+		
+		gluLookAt(position x,position y ,position z,
+				  target x , target y , target z ,
+				  0,0,1)
+	}
 	
 	onKeyboard: func(e: Key) {
 		a := e keysym sym

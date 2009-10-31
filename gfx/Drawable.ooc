@@ -20,7 +20,7 @@ Drawable: abstract class {
 	rot := Vector3d new(0,0,0)  //rotation of the drawable arround the 3 axes
 	scl := Vector3d new(1,1,1)  //scale of the drawable
 	
-	color := Color4ub new(rand() % 254,rand() % 254,rand() % 254,255)
+	color := Color4ub new(0,254,20,254)
 	
 	init: func ~drawableAbstract () {
 		
@@ -65,8 +65,7 @@ Drawable: abstract class {
 		glPopMatrix()
 	}
 	
-	update: func(t: Int) {
-	}
+	update: func(t: Int) {}
 	
 }
 

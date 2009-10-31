@@ -10,7 +10,7 @@ Particle: class extends Drawable{
 	dlist : GLuint
 	pshow := true  //show this particle?
 	
-	life = 1000 : Double
+	life = 10 : Double
 	vel := Vector3d new(0,0,1) as Vector3d
 	force := Vector3d new(0,0,0)
 	
@@ -63,14 +63,14 @@ Particle: class extends Drawable{
 		//printf("Drawing da sphere!!!")
 		//glColor4ub((pos x * 1.3) as Int % 255  + 128,(pos y * 1.3) as Int %  255 + 128,(pos z * 1.3) as Int % 255 + 128,255)
 		//glColor4d(1.0,1.0,1.0,1.0)
-		//glColor4ub(color r,color g,color b,color a)
+		glColor4d((10.0 - life)/10.0 ,life/10.0,0,0.5)
 		if(pshow)
 			glCallList(dlist)
 		//vel glPrint()
 	}
 	
 	drawfunc: func {
-		gluSphere(params,0.1,10,10)
+		gluSphere(params,1,10,10)
 	}
 	
 	drawCube: func {

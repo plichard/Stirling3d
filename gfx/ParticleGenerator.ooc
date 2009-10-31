@@ -1,4 +1,6 @@
 use sdl
+use glew
+import glew
 import structs/[LinkedList, ArrayList]
 import Particle
 import sdl/Sdl
@@ -30,6 +32,8 @@ ParticleGenerator: class extends Drawable{
 	particles := LinkedList <Particle> new()
 	constantForces := LinkedList <Vector3d> new()
 	functions := LinkedList <Pointer> new()
+	dLists := LinkedList <GLuint> new()
+		
 	
 	particleCamera := BasicCamera new()
 	
@@ -120,10 +124,20 @@ ParticleGenerator: class extends Drawable{
 	}
 	
 	_draw: func {
-		iter := particles iterator()
-		//gluSphere(params, 10, 10 ,10)
-		while(iter hasNext()) {
-			iter next() draw()
+		if(particles size() > 0){
+			list = 0 : GLuint
+			list = glGenLists(1)
+			dLists add(list)
+			glNewList(list, GL_COMPILE)
+			for(p in particles) {
+				p draw()
+			}
+			glEndList()
+		} else {
+			for(n: GLuint in dLists) {
+				glCallList(n as GLuint)
+			}
+			exit(0)
 		}
 	}
 	
