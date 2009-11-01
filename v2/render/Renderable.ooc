@@ -1,0 +1,46 @@
+use glew
+import glew
+import RenderModel
+
+Renderable: abstract class {
+	
+	isStatic := true   /* Can we use a single display list to render it? */
+	hasList := false
+	displayList : GLuint
+	model: RenderModel = null
+	
+	init: func {
+		if(isStatic && !hasList) {
+			makeDisplayList()
+			hasList = true
+		}
+	}
+	
+	
+	render: func {
+		glPushMatrix()
+		if(isStatic) {
+			glCallList(displayList)
+		} else {
+			model render()
+		}
+		glPopMatrix()
+	}
+	
+	setRenderModel: func(=model) {
+		if(!model) {
+			Exception new(This,"Trying to add a null render model !!!") throw()
+		}
+	}
+	
+	makeDisplayList: func {
+		if(!isStatic) {
+			fprintf(stderr, "Warning: Creating a display list for a non-static object!\n")
+		}
+		displayList = glGenLists(1)
+		glNewList(displayList, GL_COMPILE)
+		render()
+		glEndList()
+	}
+	
+}

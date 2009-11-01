@@ -3,7 +3,7 @@ import MovableObject
 import structs/[ArrayList, LinkedList, List]
 
 SceneNode: class {
-	pos := Vector3d new(0,0,0)
+	position := Vector3d new(0,0,0)
 	objects : List<MovableObject>
 	nodes : ArrayList<SceneNode>
 	
@@ -12,6 +12,14 @@ SceneNode: class {
 			case USE_LINKEDLIST => objects = ArrayList<MovableObject> new()
 			case USE_ARRAYLIST  => objects = LinkedList<MovableObject> new()
 		}
+	}
+	
+	setPos: func (x,y,z: Double){
+		position set(x,y,z)
+	}
+	
+	getPos: func -> Vector3d {
+		return position clone()
 	}
 	
 	getEventCandidates: func -> ArrayList<MovableObject> {
