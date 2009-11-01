@@ -1,13 +1,17 @@
-use glew,glu
+use glew,glu,sdl
+import sdl/[Sdl]
 import glew,glu/Glu
 import math/Vector3d
-import gfx/Drawable
+import Drawable
+import Billboard
 
 Particle: class extends Drawable{
 	
 	params = null : static Quadric
+	textLoaded = false : static Bool
+	dlistCreated = false : static Bool
 	godlike = false : static Bool
-	dlist : GLuint
+	dlist : static GLuint
 	pshow := true  //show this particle?
 	
 	life = 10 : Double
@@ -33,10 +37,13 @@ Particle: class extends Drawable{
 		if(!params){
 			params = gluNewQuadric()
 		}
-		dlist = glGenLists(1)
-		glNewList(dlist, GL_COMPILE)
-			drawfunc()
-		glEndList()
+		if(!dlistCreated) {
+			dlist = glGenLists(1)
+			glNewList(dlist, GL_COMPILE)
+				drawfunc()
+			glEndList()
+			dlistCreated = true
+		}
 	}
 	
 	update: func(t: Double) {
@@ -60,17 +67,53 @@ Particle: class extends Drawable{
 	}
 	
 	_draw: func {
-		//printf("Drawing da sphere!!!")
-		//glColor4ub((pos x * 1.3) as Int % 255  + 128,(pos y * 1.3) as Int %  255 + 128,(pos z * 1.3) as Int % 255 + 128,255)
-		//glColor4d(1.0,1.0,1.0,1.0)
-		glColor4d((10.0 - life)/10.0 ,life/10.0,0,0.5)
+		glColor4d(0.1,0.1,1,0.1)
+		//billboardCheatSphericalBegin()
 		if(pshow)
 			glCallList(dlist)
 		//vel glPrint()
+		//billboardEnd()
 	}
 	
+	drawSquare: func {
+		filter : GLuint  /* Which Filter To Use...not used in fact */
+		texture : GLuint[3] /* Storage for 3 textures */
+		glEnable(GL_TEXTURE_2D)
+		if(!textLoaded) {
+			
+			textureImage := SDL loadBMP("Star.bmp")
+			glGenTextures( 3, texture[0]&)
+			
+			glBindTexture( GL_TEXTURE_2D, texture[0] )
+			
+			glTexImage2D( GL_TEXTURE_2D, 0, 3, textureImage[0] w,
+							textureImage[0] h, 0, GL_BGR,
+							GL_UNSIGNED_BYTE, textureImage[0] pixels )
+			  
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+							GL_NEAREST )
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+							GL_NEAREST )
+		}
+		glBegin( GL_QUADS );
+		  /* Front Face */
+		  /* Normal Pointing Towards Viewer */
+		  glNormal3f( 0.0, 0.0, 1.0);
+		  /* Point 1 (Front) */
+		  glTexCoord2f( 1.0, 0.0); glVertex3f( -1.0, -1.0,  1.0)
+		  /* Point 2 (Front) */
+		  glTexCoord2f( 0.0, 0.0); glVertex3f(  1.0, -1.0,  1.0)
+		  /* Point 3 (Front) */
+		  glTexCoord2f( 0.0, 1.0); glVertex3f(  1.0,  1.0,  1.0)
+		  /* Point 4 (Front) */
+		  glTexCoord2f( 1.0, 1.0); glVertex3f( -1.0,  1.0,  1.0)
+		glEnd()
+	}	
+	
 	drawfunc: func {
-		gluSphere(params,1,10,10)
+		gluSphere(params,0.1,10,10)
+		//drawSquare()
+		//drawCube()
 	}
 	
 	drawCube: func {

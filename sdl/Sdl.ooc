@@ -33,7 +33,11 @@ use sdl
 	SRCALPHA: extern(SDL_SRCALPHA)		const Int/* Blit uses source alpha blending */
 	PREALLOC: extern(SDL_PREALLOC)		const Int/* Surface uses preallocated memory */
 	
-	Surface: cover from SDL_Surface
+	Surface: cover from SDL_Surface {
+		w: extern Int
+		h: extern Int
+		pixels: extern Int
+	}
 	
 	SDL_QUIT: extern(SDL_QUIT) 			const Int
 	SDL_KEYDOWN: extern(SDL_KEYDOWN) 	const Int
@@ -61,5 +65,6 @@ SDL: cover {
 	showCursor: extern(SDL_ShowCursor) static func(Int)
 	warpMouse: extern(SDL_WarpMouse) static func(Int,Int)
 	WM_GrabInput: extern(SDL_WM_GrabInput) static func(Int)
+	loadBMP: extern(SDL_LoadBMP) static func(String) -> Surface*
 	//linkedVersion: extern(SDL_Linked_Version) static func() -> const SDL_version*
 }

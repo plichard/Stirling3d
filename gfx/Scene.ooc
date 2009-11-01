@@ -11,6 +11,7 @@ Scene: class {
 	drawables := LinkedList<Drawable> new()
 	camera : FreeFlyCamera
 	clear := true
+	blend := false
 
 	init: func(){
 		glEnable(GL_BLEND)
@@ -30,13 +31,19 @@ Scene: class {
 	draw: func(){
 		if(clear) {
 			glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
-			glDisable(GL_BLEND)
 		} else {
-			glDisable(GL_BLEND)
+			glClear(GL_DEPTH_BUFFER_BIT)
 		}
 		
-			
-		//glClear(GL_DEPTH_BUFFER_BIT)
+		if(blend) {
+			glEnable(GL_BLEND)
+			glDisable(GL_DEPTH_TEST)
+		} else{
+			glDisable(GL_BLEND)
+			glEnable(GL_DEPTH_TEST)
+		}
+		
+		
 		glMatrixMode( GL_MODELVIEW )
 		glLoadIdentity( )
 		camera look()

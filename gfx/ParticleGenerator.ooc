@@ -7,6 +7,7 @@ import sdl/Sdl
 import Drawable
 import math/Vector3d
 import BasicCamera
+import Billboard
 
 /*
 Quadric: cover from GLUquadric*
@@ -26,6 +27,7 @@ ParticleGenerator: class extends Drawable{
 	fertileTime := -1.0
 	pTime,cTime: UInt32
 	lastSpawn = 0 : UInt32
+	spawnMultiplier := 1
 	initTime : UInt32
 	//params := gluNewQuadric()
 	
@@ -82,24 +84,26 @@ ParticleGenerator: class extends Drawable{
 		if(cTime - initTime < fertileTime || fertileTime == -1) {
 		
 			if(cTime - lastSpawn > (dt + rand() % (2*ddt) - ddt)) {
-				nvel := vel clone()
-				nlife := life
-				if(dv x) {
-					nvel x = vel x + rand() % (2*dv x as Int) - dv x 
+				for(i in 0..spawnMultiplier) {
+					nvel := vel clone()
+					nlife := life
+					if(dv x) {
+						nvel x = vel x + rand() % (2*dv x as Int) - dv x 
+					}
+					if(dv y) {
+						nvel y = vel y + rand() % (2*dv y as Int) - dv y 
+					}
+					if(dv z) {
+						nvel z = vel z + rand() % (2*dv z as Int) - dv z 
+					}
+					
+					if(dlife) {
+						nlife += rand() % dlife -   dlife
+					}
+					
+					
+					particles add(Particle new(nlife,pos + Vector3d new(1.0,1.0,1.0),nvel))
 				}
-				if(dv y) {
-					nvel y = vel y + rand() % (2*dv y as Int) - dv y 
-				}
-				if(dv z) {
-					nvel z = vel z + rand() % (2*dv z as Int) - dv z 
-				}
-				
-				if(dlife) {
-					nlife += rand() % dlife -   dlife
-				}
-				
-				
-				particles add(Particle new(nlife,pos + Vector3d new(1.0,1.0,1.0),nvel))
 				lastSpawn = cTime
 				
 			}
@@ -124,22 +128,11 @@ ParticleGenerator: class extends Drawable{
 	}
 	
 	_draw: func {
-		if(particles size() > 0){
-			list = 0 : GLuint
-			list = glGenLists(1)
-			dLists add(list)
-			glNewList(list, GL_COMPILE)
-			for(p in particles) {
-				p draw()
-			}
-			glEndList()
-		} else {
-			for(n: GLuint in dLists) {
-				glCallList(n as GLuint)
-			}
-			exit(0)
-		}
+		for(p in particles) {
+			p draw()
+		}	
 	}
+	
 	
 	addConstantForce: func(f: Vector3d) {
 		constantForces add(f)

@@ -39,6 +39,9 @@ Stirling3d: class {
 						scene clear = !(scene clear)
 						glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
 					}
+					else if(event key keysym sym == SDLK_b ) {
+						scene blend = !(scene blend)
+					}
 					else if (event key keysym sym == SDLK_ESCAPE) {
 						isRunning = false
 					}
