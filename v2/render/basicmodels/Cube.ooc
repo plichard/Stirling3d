@@ -23,9 +23,9 @@ Cube: class extends RenderModel {
 		cube vertices add(v7)
 		cube vertices add(v8)
 		
-		c1 := Color3d new(1,0,0,1)
-		c2 := Color3d new(0,1,0,1)
-		c3 := Color3d new(0,0,1,1)
+		c1 := Color4d new(1,0,0,1)
+		c2 := Color4d new(0,1,0,1)
+		c3 := Color4d new(0,0,1,1)
 		
 		f1 := Quad new(v1, v2, v3, v4,
 					   c1, c1, c1, c1)
@@ -49,7 +49,6 @@ Cube: class extends RenderModel {
 		
 		addGroup(cube)
 		
-		isStatic = true
 	}	
 
 }

@@ -21,8 +21,8 @@ Face: class {
 }
 
 Triangle: class extends Face {
-	v1, v2, v2: Vertex3d	//vertices
-	t1, t1, t2: Vertex3d	//tex coords
+	v1, v2, v3: Vertex3d	//vertices
+	t1, t2, t3: Vertex3d	//tex coords
 	c1, c2, c3: Color4d		//colors
 	n: Vertex3d				//face normal
 	
