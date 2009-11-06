@@ -1,9 +1,12 @@
 
 import render/RenderModel
 import render/VertexGroup
+import utils/Debug
 
 Cube: class extends RenderModel {
-	init: func {
+	init: func  ~cubeInit {
+		//dbg("Loading cube...")
+		super()
 		cube := VertexGroup new()
 		v1 := Vertex3d new(-1, 1,-1)
 		v2 := Vertex3d new(-1, 1, 1)
@@ -28,17 +31,17 @@ Cube: class extends RenderModel {
 		c3 := Color4d new(0,0,1,1)
 		
 		f1 := Quad new(v1, v2, v3, v4,
-					   c1, c1, c1, c1)
+					   c1, c2, c1, c1)
 		f2 := Quad new(v2, v3, v6, v7,
-					   c1, c1, c1, c1)
+					   c2, c3, c2, c1)
 		f3 := Quad new(v6, v7, v5, v8,
-					   c1, c1, c1, c1)
+					   c3, c1, c3, c2)
 		f4 := Quad new(v1, v2, v8, v5,
-					   c1, c1, c1, c1)
+					   c1, c2, c2, c1)
 		f5 := Quad new(v3, v4, v8, v7,
-					   c1, c1, c1, c1)
+					   c1, c1, c2, c3)
 		f6 := Quad new(v1, v2, v5, v6,
-					   c1, c1, c1, c1)
+					   c2, c2, c3, c3)
 					   
 		cube faces add(f1)
 		cube faces add(f2)
@@ -48,7 +51,7 @@ Cube: class extends RenderModel {
 		cube faces add(f6)
 		
 		addGroup(cube)
-		
+		//dbg("[OK]\n")
 	}	
 
 }

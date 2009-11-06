@@ -179,6 +179,11 @@ RenderWindow: class {
 
 		/* Resize the initial window */
 		resizeWindow( width, height )
+		
+		SDL enableKeyRepeat(10,10)
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
+		glEnable(GL_COLOR_MATERIAL)
+
 	}
 	
 	

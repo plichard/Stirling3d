@@ -1,6 +1,6 @@
 use sdl
 import structs/HashMap
-import utils/Vector3d
+import utils/[Vector3d, Debug]
 import sdl/[Sdl,Event]
 import BasicCamera
 
@@ -15,10 +15,12 @@ FreeFlyCamera: class extends BasicCamera{
 	keyconf := HashMap<Int> new()
 	keystates := HashMap<Bool> new()
 	
-	init: func(=position) {
+	init: func ~ffCameraInit (.position) {
+		dbg("Creating FreeFlyCamera...")
 		super()
 		phi = 0
 		theta = 0
+		this position = position
 		vectorsFromAngles()
 		
 		speed = 1
@@ -32,7 +34,9 @@ FreeFlyCamera: class extends BasicCamera{
 		
 		SDL WM_GrabInput(SDL_GRAB_ON)
 		SDL showCursor(SDL_DISABLE)
-		target := Vector3d new()
+		target = Vector3d new(0,0,0)
+		candidate = true
+		dbg("[OK]\n")
 	}
 	
 	handleEvent: func(e: Event*) {
@@ -52,6 +56,7 @@ FreeFlyCamera: class extends BasicCamera{
 		gluLookAt(position x,position y ,position z,
 				  target x , target y , target z ,
 				  0,0,1)
+		//fprintf(stderr,"looking at: (%f,%f,%f) from (%f,%f,%f)\n",target x, target y, target z,position x, position y, position z)
 	}
 	
 	onKeyboard: func(e: Key) {

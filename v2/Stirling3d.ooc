@@ -3,6 +3,9 @@ import sdl/Event
 import render/RenderWindow
 import scene/[Scene, MovableObject]
 import structs/ArrayList
+import utils/Debug
+
+usleep: extern func(...)
 
 Stirling3d: class {
 	running := false
@@ -13,7 +16,7 @@ Stirling3d: class {
 	
 	
 	init: func {
-		fprintf(stderr, " ===================== Stirling 3d ======================\n")
+		dbg(" ===================== Stirling 3d ======================\n")
 		eventCandidates = ArrayList<MovableObject> new()
 	}
 	
@@ -30,14 +33,18 @@ Stirling3d: class {
 	
 	quit: func {
 		defaultRenderWindow quit(0)
-		fprintf(stderr, "Exited cleanly =)\n")
+		dbg( "Exited cleanly =)\n")
 	}
 	
 	mainLoop: func {
 		running = true
+		eventCandidates = defaultScene getEventCandidates()
 		while(running){
 			handleEvent()
-			
+			if(defaultScene) {
+				defaultScene render()
+			}
+			usleep(30000)
 		}
 	   
 		quit()

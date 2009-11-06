@@ -9,9 +9,10 @@ Renderable: abstract class {
 	displayList : GLuint
 	model: RenderModel = null
 	
-	init: func {
+	init: func ~renderableInit {
 		if(isStatic && !hasList) {
-			makeDisplayList()
+			if(model)
+				makeDisplayList()
 			hasList = true
 		}
 	}
@@ -39,7 +40,7 @@ Renderable: abstract class {
 		}
 		displayList = glGenLists(1)
 		glNewList(displayList, GL_COMPILE)
-		render()
+		model render()
 		glEndList()
 	}
 	

@@ -8,8 +8,9 @@ gluLookAt: extern func(...)
 BasicCamera: class extends MovableObject{
 	target : Vector3d
 	init: func ~basicCamera {
-		target := Vector3d new(0,0,0)
 		super()
+		target = Vector3d new(0,0,0)
+		candidate = false
 	}
 	
 	handleEvent: func (e: Event*) {

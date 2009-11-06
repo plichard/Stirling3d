@@ -1,10 +1,15 @@
+use glew,sdl
+import glew
+import sdl/Video
 import structs/ArrayList
-import SceneNode, BasicCamera, MovableObject
+import SceneNode, BasicCamera, MovableObject, Light
+import utils/Debug
 
 Scene: class {
 	
 	nodes := ArrayList<SceneNode> new()
 	camera : BasicCamera = null
+	lights := ArrayList<Light> new()
 	
 	init: func {
 	}
@@ -24,13 +29,33 @@ Scene: class {
 	}
 	
 	getEventCandidates: func -> ArrayList<MovableObject> {
+		printf("getting candidates\n")
 		candidates := ArrayList<MovableObject> new()
-		if(camera)
+		if(camera && camera candidate) {
+			printf("Adding camera to candidates\n")
 			candidates add(camera)
+		}
 			
 		for(node: SceneNode in nodes) {
-			node getEventCandidates()
+			candidates addAll(node getEventCandidates())
 		}
+		return candidates
 	}
 	
+	render: func {
+		glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
+		//glEnable(GL_DEPTH_TEST)
+		glMatrixMode( GL_MODELVIEW )
+		glLoadIdentity( )
+		camera look()
+		for(node: SceneNode in nodes) {
+			node render()
+		}
+		glFlush()
+		SDLVideo glSwapBuffers()
+	}
+	
+	addLight: func(l: Light) {
+		lights add(l)
+	}
 }
