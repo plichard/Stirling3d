@@ -23,7 +23,7 @@ Screen: class {
 	
 	
 	init: func(=x,=y,=bpp,=flags) {
-		SDL init(INIT_EVERYTHING)
+		SDL init(SDL_INIT_EVERYTHING)
 		setRes(x,y,bpp,flags)
 	}
 	
