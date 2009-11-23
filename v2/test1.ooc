@@ -4,8 +4,7 @@ import SimpleCube
 import utils/Vector3d
 
 main: func {
-	engine := Stirling3d new()
-	engine newRenderWindow(800,600,32,false)
+	engine := Stirling3d new(800,600,32,false)
 	cube := SimpleCube new()
 	cube2 := SimpleCube new()
 	cube2 position set(3,3,3)

@@ -4,6 +4,9 @@ import structs/ArrayList
 import VertexGroup
 import utils/Vector3d
 import io/FileReader
+import utils/Debug
+
+getchar: extern func()
 
 RenderModel: class {
 	
@@ -15,8 +18,32 @@ RenderModel: class {
 	}
 	
 	loadFromObj: func(filename: String) {
-		file := FileReader new("render/models/cube.obj")
+		dbg("Loading " + filename + "\n")
+		file := FileReader new(filename)
 		group := VertexGroup new()
+		
+		nline := 0
+		while(file hasNext()) {
+			c := file read()
+			if(c == '\n') {
+				nline += 1
+			}
+		}
+		
+		file reset(0)
+		for(i in 0..nline) {
+			line := readLine(file)
+			dbg("got a line: " + line + "\n")
+			type := String new(32)
+			sscanf(line,"%s",type)
+			if(type == "v") {
+				dbg("it is a vertex: ")
+				a,b,c: Double
+				sscanf(line,"%s %f %f %f",type,a&,b&,c&)
+			} else {
+				dbg("\tunknown line :( \n")
+			}
+		}
 	}
 	
 	addGroup: func(g: VertexGroup) {
@@ -53,3 +80,27 @@ RenderModel: class {
 	}
 	
 }
+
+readLine: func(filereader: FileReader) -> String{
+		i := 0
+		nChars := 0
+		//line : Char[256]
+		while(filereader hasNext() && filereader read() != '\n' ) {
+			nChars += 1
+		}
+		
+		line := String new(nChars)
+		filereader rewind(nChars + 1)
+		i = 0
+		while(i < nChars) {
+			line[i] = filereader read()
+			i += 1
+		}
+		line[i] = '\0'
+        
+        // skip the '\n'
+        filereader read()
+        
+        //printf("Got line %s\n", line)
+		return line as String clone()
+	}

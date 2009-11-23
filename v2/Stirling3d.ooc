@@ -10,18 +10,15 @@ usleep: extern func(...)
 Stirling3d: class {
 	running := false
 	
-	defaultRenderWindow: RenderWindow = null
+	renderWindow: RenderWindow = null
 	defaultScene : Scene = null
 	eventCandidates : ArrayList<MovableObject>
 	
 	
-	init: func {
+	init: func(x,y,bpp: Int, f: Bool) {
 		dbg(" ===================== Stirling 3d ======================\n")
 		eventCandidates = ArrayList<MovableObject> new()
-	}
-	
-	newRenderWindow: func(x,y,bpp: Int, f: Bool) {
-		defaultRenderWindow = RenderWindow new(x,y,bpp,f)
+		renderWindow = RenderWindow new(x,y,bpp,f)
 	}
 	
 	newScene: func(=defaultScene) {
@@ -32,7 +29,7 @@ Stirling3d: class {
 	}
 	
 	quit: func {
-		defaultRenderWindow quit(0)
+		renderWindow quit(0)
 		dbg( "Exited cleanly =)\n")
 	}
 	
@@ -53,11 +50,10 @@ Stirling3d: class {
 	handleEvent: func {
 		event: Event
 		while ( SDLEvent poll( event& ) ) {
-		    if(defaultRenderWindow) {
-				if(!defaultRenderWindow handleEvent(event&)) {
-					running = false
-				}
+			if(!renderWindow handleEvent(event&)) {
+				running = false
 			}
+	
 			for( candidate in eventCandidates ) {
 				candidate handleEvent(event&)
 			}

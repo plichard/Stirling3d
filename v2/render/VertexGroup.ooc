@@ -73,7 +73,7 @@ Quad: class extends Face {
 VertexGroup: class {
 	vertices := ArrayList<Vertex3d> new()
 	faces := ArrayList<Face> new()
-	texture := 0   /* TODO this texture reference is rubbish =) */
+	texture := 0   /** TODO this texture reference is rubbish =) */
 	
 	init: func {
 	}
