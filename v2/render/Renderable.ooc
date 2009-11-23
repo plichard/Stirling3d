@@ -14,6 +14,7 @@ Renderable: abstract class {
 			if(model) {
 				makeDisplayList()
 				hasList = true
+				model clear()
 			}
 		}
 	}

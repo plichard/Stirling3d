@@ -17,6 +17,10 @@ RenderModel: class {
 		groups = ArrayList<VertexGroup> new()
 	}
 	
+	clear: func {
+		groups clear()
+	}
+	
 	loadFromObj: func(filename: String) {
 		dbg("Loading " + filename + "\n")
 		file := FileReader new(filename)

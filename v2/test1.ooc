@@ -5,9 +5,9 @@ import utils/Vector3d
 import MyObject
 
 main: func {
-	engine := Stirling3d new(800,600,32,false)
+	engine := Stirling3d new(1280,800,32,false)
 	
-	monkey := MyObject new("render/models/monkey.obj")
+	monkey := MyObject new("render/models/vadertie-1.obj")
 	scene := Scene new()
 	scene1 := SceneNode new(USE_ARRAYLIST)
 	
