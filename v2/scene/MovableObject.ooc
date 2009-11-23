@@ -5,7 +5,7 @@ import utils/Vector3d
 
 import render/Renderable
 
-MovableObject: abstract class extends Renderable{
+MovableObject: abstract class extends Renderable {
 	position: Vector3d
 	rotation: Vector3d
 	scale: Vector3d

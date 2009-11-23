@@ -7,7 +7,7 @@ SimpleCube: class extends MovableObject {
 	init: func ~simpleCubeInit {
 		fprintf(stderr, "Loading simple cube... ")
 		model = RenderModel new()
-		model loadFromObj("render/models/cube.obj")
+		model loadFromObj("render/models/monkey.obj")
 		super()	
 		fprintf(stderr, "[OK]\n")
 	}

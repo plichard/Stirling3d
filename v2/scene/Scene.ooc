@@ -44,7 +44,12 @@ Scene: class {
 	
 	render: func {
 		glClear( GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT )
-		//glEnable(GL_DEPTH_TEST)
+		glEnable(GL_DEPTH_TEST)
+		lightAmbient := [1, 1, 1, 1]
+		glLightfv(GL_LIGHT0, GL_AMBIENT,lightAmbient)
+		glEnable(GL_LIGHT0)
+		glEnable(GL_LIGHTING)
+		
 		glMatrixMode( GL_MODELVIEW )
 		glLoadIdentity( )
 		camera look()

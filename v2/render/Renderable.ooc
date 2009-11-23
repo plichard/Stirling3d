@@ -7,20 +7,21 @@ Renderable: abstract class {
 	isStatic := true   /* Can we use a single display list to render it? */
 	hasList := false
 	displayList : GLuint
-	model: RenderModel = null
+	model := RenderModel new()
 	
 	init: func ~renderableInit {
 		if(isStatic && !hasList) {
-			if(model)
+			if(model) {
 				makeDisplayList()
-			hasList = true
+				hasList = true
+			}
 		}
 	}
 	
 	
 	render: func {
 		glPushMatrix()
-		if(isStatic) {
+		if(isStatic && hasList) {
 			glCallList(displayList)
 		} else {
 			model render()
