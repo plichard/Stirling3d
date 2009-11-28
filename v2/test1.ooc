@@ -7,7 +7,7 @@ import MyObject
 main: func {
 	engine := Stirling3d new(1280,800,32,false)
 	
-	monkey := MyObject new("render/models/vadertie-1.obj")
+	monkey := MyObject new("render/models/monkey.obj")
 	scene := Scene new()
 	scene1 := SceneNode new(USE_ARRAYLIST)
 	
