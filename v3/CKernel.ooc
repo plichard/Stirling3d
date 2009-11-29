@@ -3,21 +3,36 @@ import sdl/Sdl
 import ITask,Singleton
 import structs/LinkedList
 
-CKernel: class extends Singleton<CKernel>{
+CKernel: class {
 	
-	taskList : static LinkedList<ITask>
-	pausedTaskList : static LinkedList<ITask>
+	taskList : LinkedList<ITask>
+	pausedTaskList : LinkedList<ITask>
+	
+	
+	//singleton =============
+	instance : static This = null
+	
+	snew: static func -> This {
+		if(instance)
+			Exception new(This name + " was lonely =)") throw()
+			
+		instance = This new()
+		return instance
+	}
+	
+	get: static func -> This {
+		return instance
+	}
+	
+	//=========================
 	
 	init: func ~ckernel {
-		T = This
-		super()
 		taskList = LinkedList<ITask> new()
 		pausedTaskList = LinkedList<ITask> new()
 		SDL init(0)
 	}
 	
-	
-	addTask: static func(t: ITask) -> Bool {
+	addTask: func(t: ITask) -> Bool {
 		
 		if(!t start()) {return false}
 		pos := 0
@@ -31,7 +46,7 @@ CKernel: class extends Singleton<CKernel>{
 		return true
 	}
 	
-	/*execute: func -> Int {
+	execute: func -> Int {
 		printf("[Execute] size = %d\n",taskList size())
 		while(taskList size() > 0) {
 			for(task in taskList) {
@@ -83,6 +98,6 @@ CKernel: class extends Singleton<CKernel>{
 	
 	onQuit: func {
 		SDL quit()
-	}*/
+	}
 	
 }

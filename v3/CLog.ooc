@@ -9,13 +9,36 @@ MAX_LOG_STRINGS := 256
 
 CLog: class {
 	
+	
+	
 	appLog: FileWriter
 	clientLog: FileWriter
 	serverLog: FileWriter
 	
+	//singleton =============
+	
+	instance : static This = null
+	
+	snew: static func {
+		if(instance)
+			Exception new(This name + " was lonely =)") throw()
+			
+		instance = This new()
+	}
+	
+	get: static func -> This {
+		return instance
+	}
+	
+	//=========================
+	
 	init: func {
 		start()
 	}
+	
+	
+	
+	
 	
 	start: func -> Bool {
 		appLog = FileWriter new("applog.txt")
@@ -31,8 +54,10 @@ CLog: class {
 		if(target & LOG_CLIENT)
 			clientLog write(msg)
 			
-		if(target & LOG_SERVER)
+		if(target & LOG_SERVER) {
 			serverLog write(msg)
+			printf("writing server log\n")
+		}
 			
 		if(target & LOG_USER)
 			appLog write(msg)

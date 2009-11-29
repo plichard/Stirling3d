@@ -1,15 +1,17 @@
 
 Singleton: abstract class<T> {
-	//instance: T = null
+	//instance: T* = null
 	//instance: static T* = null
 	
+	instance : T
+	
 	init: func ~singleton {
-		//if(instance) {
-			//
-		//}
-		printf("T: %p\n",T)
-		printf("throwing exception\n")
-		//Exception new("singleton " + T name) throw()
-		printf("done\n")
+		instance = null
+		printf("created singleton for: %s",This name)
+	}
+	
+	snew: abstract func
+	
+	get: static func -> T {
 	}
 }
