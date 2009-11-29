@@ -38,12 +38,7 @@ CVideoUpdate: class extends ITask {
 			CLog get() write(LOG_CLIENT,"Video: " + SDL getError())
 			return false;
 		}
-		SDL GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )
-		SDL GL_SetAttribute( SDL_GL_RED_SIZE, 8 )
-		SDL GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )
-		SDL GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )
-		SDL GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )
-		SDL GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )
+		
 
 		flags := SDL_OPENGL | SDL_ANYFORMAT | SDL_FULLSCREEN
 
@@ -53,6 +48,13 @@ CVideoUpdate: class extends ITask {
 			CLog get() write(LOG_CLIENT,"Video: " + SDL getError())
 			return false
 		}
+		
+		SDL GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )
+		SDL GL_SetAttribute( SDL_GL_RED_SIZE, 8 )
+		SDL GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )
+		SDL GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )
+		SDL GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )
+		SDL GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )
 
 		SDL showCursor(SDL_DISABLE)
 
@@ -66,7 +68,7 @@ CVideoUpdate: class extends ITask {
 	
 	update: func {
 		if(CInputTask get() curKey(SDLK_ESCAPE)) {
-			canKill = true
+			//canKill = true
 		}
 		SDLVideo glSwapBuffers()
 	}

@@ -39,9 +39,8 @@ CApplication: class {
 		
 		kernel addTask(globalTimer)
 		kernel addTask(inputTask)
-		kernel addTask(pong)
 		kernel addTask(videoTask)
-		
+		kernel addTask(pong)	
 		kernel execute()
 	}
 }
