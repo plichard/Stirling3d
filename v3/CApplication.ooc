@@ -1,4 +1,4 @@
-import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, CPongTask
+import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, CPongTask, CHighResTestApp
 
 CApplication: class {
 	videoTask: CVideoUpdate
@@ -8,14 +8,10 @@ CApplication: class {
 	//singleton =============
 	instance : static This = null
 	
-	snew: static func {
-		if(instance)
-			Exception new(This name + " was lonely =)") throw()
-			
-		instance = This new()
-	}
-	
 	get: static func -> This {
+		if(!instance) {
+			instance = new()
+		}
 		return instance
 	}
 	//========================
@@ -23,7 +19,6 @@ CApplication: class {
 	init: func {}
 
 	run: func {
-		kernel := CKernel snew()
 		
 		globalTimer = CGlobalTimer snew()
 		globalTimer priority = 10
@@ -31,16 +26,20 @@ CApplication: class {
 		inputTask = CInputTask snew()
 		inputTask priority = 20
 		
-		pong := CPongTask new()
-		pong priority = 100
+		//pong := CPongTask new()
+		//pong priority = 100
+		
+		test := CHighResTestApp new()
+		test priority = 100
 		
 		videoTask = CVideoUpdate snew()
 		videoTask priority = 10000
 		
+		kernel := CKernel get()
 		kernel addTask(globalTimer)
 		kernel addTask(inputTask)
 		kernel addTask(videoTask)
-		kernel addTask(pong)	
+		kernel addTask(test)	
 		kernel execute()
 	}
 }

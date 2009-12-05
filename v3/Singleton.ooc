@@ -1,17 +1,8 @@
-
-Singleton: abstract class<T> {
-	//instance: T* = null
-	//instance: static T* = null
-	
-	instance : T
+Singleton: class <T> {
+	instance : T* = null
 	
 	init: func ~singleton {
-		instance = null
-		printf("created singleton for: %s",This name)
+		printf("class %s for %s \n",This name, T name)
 	}
 	
-	snew: abstract func
-	
-	get: static func -> T {
-	}
 }

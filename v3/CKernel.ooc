@@ -12,15 +12,11 @@ CKernel: class {
 	//singleton =============
 	instance : static This = null
 	
-	snew: static func -> This {
-		if(instance)
-			Exception new(This name + " was lonely =)") throw()
-			
-		instance = This new()
-		return instance
-	}
-	
 	get: static func -> This {
+		if(!instance) {
+			instance = new()
+			printf("Kernel initialized\n")
+		}
 		return instance
 	}
 	

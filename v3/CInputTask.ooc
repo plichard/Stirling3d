@@ -35,6 +35,8 @@ CInputTask: class extends ITask {
 	}
 	
 	start: func -> Bool {
+		
+		//SDL initSubSystem(SDL_INIT_KEYBOARD)
 		keys = SDL getKeyState(keyCount&)
 		//oldKeys = new CMMDynamicBlob<unsigned char>(keyCount);
 		oldKeys = gc_calloc(keyCount,sizeof(UChar))
@@ -47,6 +49,7 @@ CInputTask: class extends ITask {
 	stop: func {
 		keys = 0
 		oldKeys = 0
+		//SDL quitSubSystem(SDL_INIT_KEYBOARD)
 	}
 	
 	update: func {

@@ -1,2 +1,2 @@
 all:
-	ooc main.ooc -g -v -driver=sequence
+	ooc main.ooc -g -v -nolines -driver=sequence

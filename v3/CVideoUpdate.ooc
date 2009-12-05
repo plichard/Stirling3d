@@ -31,7 +31,7 @@ CVideoUpdate: class extends ITask {
 	//========================
 
 	start: func -> Bool {
-		if(-1 == SDL initSubSystem(SDL_INIT_VIDEO))
+		if(-1 == SDL init(SDL_INIT_EVERYTHING))
 		{
 			/*CLog::Get().Write(LOG_CLIENT,IDS_GENERIC_SUB_INIT_FAIL,
 			"Video",SDL_GetError());*/

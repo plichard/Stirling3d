@@ -1,7 +1,11 @@
-import CApplication
+import CApplication,CFactory,CProduct
+import utils/convert
 
 main: func() {
-	CApplication snew()
+	
+	
+	objtoS3D("models/notex-cube.obj","models/notex-cube.s3d")
+	//CRessourceManager new()
 	CApplication get() run()
 	
 }

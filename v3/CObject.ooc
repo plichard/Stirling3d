@@ -1,0 +1,8 @@
+CObject: class {
+
+
+
+
+
+
+}

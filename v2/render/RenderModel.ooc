@@ -123,27 +123,27 @@ RenderModel: class {
 	
 }
 
-readLine: func(filereader: FileReader) -> String{
-		i := 0
-		nChars := 0
-		//line : Char[256]
-		while(filereader hasNext() && filereader read() != '\n' ) {
-			nChars += 1
-		}
-		
-		line := String new(nChars)
-		filereader rewind(nChars + 1)
-		i = 0
-		while(i < nChars) {
-			line[i] = filereader read()
-			i += 1
-		}
-		line[i] = '\0'
-        
-        // skip the '\n'
-        filereader read()
-        
-        //printf("Got line %s\n", line)
-		return line as String clone()
+readLine: func(filereader: FileReader) -> String {
+	i := 0
+	nChars := 0
+	//line : Char[256]
+	while(filereader hasNext() && filereader read() != '\n' ) {
+		nChars += 1
 	}
+	
+	line := String new(nChars)
+	filereader rewind(nChars + 1)
+	i = 0
+	while(i < nChars) {
+		line[i] = filereader read()
+		i += 1
+	}
+	line[i] = '\0'
+	
+	// skip the '\n'
+	filereader read()
+	
+	//printf("Got line %s\n", line)
+	return line as String clone()
+}
 
