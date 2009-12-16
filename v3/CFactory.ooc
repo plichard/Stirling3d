@@ -26,6 +26,7 @@ CFactory: class {
 					printf("loading %s for the first time\n",filename)
 					mesh = StaticMesh new(filename)
 					meshes add(filename, mesh)
+					mesh prepare()
 				} else {
 					printf("already have %s, returning reference\n",filename)
 				}

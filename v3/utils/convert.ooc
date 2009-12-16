@@ -1,20 +1,20 @@
 import utils/[types,text]
-import io/[FileReader, FileWriter]
+import io/[FileReader, FileWriter, File]
 import text/StringTokenizer
 import structs/Array
 
 
 objtoS3D: func(fromName, toName: String) -> Bool {
 	
-	nVertices : Long = 0
-	nVertexNormals : Long = 0
-	nFaces : Long = 0
+	nVertices : Int = 0
+	nVertexNormals : Int = 0
+	nFaces : Int = 0
 	nTexCoordinates := 0
-	nLines : Long = 0
+	nLines : Int = 0
 	source := FileReader new(fromName)
 	
 	//lets count how much of each(vertices, faces...) we got in order to alloc everything at once
-	
+	printf("analyzing file...\n")
 	
 	while(source hasNext()) {
 		line := readLine(source)
@@ -37,7 +37,6 @@ objtoS3D: func(fromName, toName: String) -> Bool {
 	
 	
 	printf("%d vertices, %d faces, %d vertex normals and %d texture coordinates\n",nVertices, nFaces, nVertexNormals, nTexCoordinates)
-	
 	source reset(0)
 	
 	vertices :  Float3* = gc_malloc(nVertices * Float3 size)
@@ -51,18 +50,15 @@ objtoS3D: func(fromName, toName: String) -> Bool {
 	nVertexNormals = 0
 	nFaces = 0
 	nTexCoordinates = 0
-	currentLine : Long = 0
+	currentLine : Int = 0
+	
+	printf("populating arrays...\n")
 	
 	while(source hasNext()) {
 		//printf("#%Ld\n",currentLine)
 		line := readLine(source)
 		tok := StringTokenizer new(line," /")
-		/*printf("tokenized line: ")
-		t := 0
-		while(tok hasNext()) {
-			printf("%s|",tok nextToken())
-		}
-		println()*/
+		
 		ftoken := tok nextToken()
 		if( ftoken == "v" ) {
 			vertices[nVertices] x = tok nextToken() toFloat()
@@ -113,16 +109,65 @@ objtoS3D: func(fromName, toName: String) -> Bool {
 			printf("%d%%\n",currentLine*100/nLines)
 		}
 	}
-	printf("100%%\n")
+	//printf("100%%\n")
 	
+	//we will now check if one vertex is used with multiple normals
+	//if so, the mean will be calculated and the vertex used only once
+	
+	printf("recalculating individual normals for each vertex...\n")
+	
+	new_faces :  VFace* = gc_malloc(nFaces * VFace size)
+	new_normals: Float3* = gc_malloc(nVertices * Float3 size)
+	
+	for(vertex in 0..nVertices) {
+		normal := Float3 new(0,0,0)
+		meanCount : Float = 0.0
+		for(face in 0..nFaces) {
+			if(notexfaces[face] v1 == vertex) {
+				normal = normal + normals[notexfaces[face] n1]		
+				meanCount += 1
+			}
+			if(notexfaces[face] v2 == vertex) {
+				normal = normal + normals[notexfaces[face] n2]		
+				meanCount += 1
+			}
+			if(notexfaces[face] v3 == vertex) {
+				normal = normal + normals[notexfaces[face] n3]	
+				meanCount += 1
+			}
+			
+		}
+		if(meanCount > 0) {
+			new_normals[vertex] = normal / meanCount
+			//printf("(%f,%f,%f) / %f\n",new_normals[vertex] x, new_normals[vertex] y, new_normals[vertex] z, meanCount)
+		}
+		
+		if(vertex % (nVertices/100 + 1) == 0) {
+			printf("%d%%\n",vertex*100/nVertices)
+		}
+	}
+	
+	printf("copying faces...\n")
+	for(face in 0..nFaces) {
+		new_faces[face] v1 = notexfaces[face] v1
+		new_faces[face] v2 = notexfaces[face] v2
+		new_faces[face] v3 = notexfaces[face] v3
+	}
+	
+	printf("writing to file...\n")
 	//close the source file and open the destination one
 	//we will write it without texture informations for now....
 	source close()
-	dest := FileWriter new(toName,"wb")
+	file := File new(toName)
+	if(file exists()) {
+		file remove()
+	}
+	dest := FileWriter new(file, "wb")
+	
 	//write the number of vertices
 	dest write(nVertices&,Int size)
 	//write the number of normals
-	dest write(nVertexNormals&, Int size)
+	//dest write(nVertexNormals&, Int size) (not needed, the number will be the same with the new fix)
 	//write the number of faces
 	dest write(nFaces&, Int size)
 	
@@ -130,15 +175,15 @@ objtoS3D: func(fromName, toName: String) -> Bool {
 	dest write(vertices, Float3 size * nVertices)
 	
 	//write the normals
-	dest write(normals, Float3 size * nVertexNormals)
+	dest write(new_normals, Float3 size * nVertices)
 	
 	//write the faces
 	if(nTexCoordinates == 0) {
-		dest write(notexfaces, FaceNoTex size * nFaces)
+		dest write(new_faces, VFace size * nFaces)
 	} else {
 		printf("sorry, tex coords unsupported yet :(\n")
 	}
-	
+	printf("DONE\n")
 	dest close()
 	
 	return true

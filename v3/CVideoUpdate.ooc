@@ -1,6 +1,8 @@
-use sdl
+use sdl,glew
+import glew
 import sdl/[Sdl,Video,Event]
 import ITask,CLog,CInputTask
+
 
 CVideoUpdate: class extends ITask {
 	
@@ -21,7 +23,7 @@ CVideoUpdate: class extends ITask {
 		if(instance)
 			Exception new(This name + " was lonely =)") throw()
 			
-		instance = This new(1280,800,32)
+		instance = This new(1200,800,32)
 		return instance
 	}
 	
@@ -40,7 +42,7 @@ CVideoUpdate: class extends ITask {
 		}
 		
 
-		flags := SDL_OPENGL | SDL_ANYFORMAT | SDL_FULLSCREEN
+		flags := SDL_OPENGL | SDL_ANYFORMAT// | SDL_FULLSCREEN
 
 		if(!SDLVideo setMode(scrWidth, scrHeight, scrBPP, flags)) {
 			/*CLog::Get().Write(LOG_CLIENT, IDS_BAD_DISPLAYMODE,
@@ -55,6 +57,9 @@ CVideoUpdate: class extends ITask {
 		SDL GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )
 		SDL GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )
 		SDL GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )
+		
+		glShadeModel(GL_SMOOTH)
+		glEnable(GL_DEPTH_TEST)
 
 		SDL showCursor(SDL_DISABLE)
 
