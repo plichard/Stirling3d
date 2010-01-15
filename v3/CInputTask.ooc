@@ -1,30 +1,33 @@
 use sdl
 import sdl/[Sdl,Event]
 import ITask
+import structs/LinkedList
 
 memcpy: extern func(...)
+usleep: extern func(...)
+
+import Listener
 CInputTask: class extends ITask {
 	
-	keys: UChar*
-	oldKeys: UChar*
+	keys: UInt8*
+	oldKeys: UInt8*
 	keyCount: Int
 	
 	dX,dY: Int
 	buttons: UInt
 	oldButtons: UInt
+	
+	event: Event
+	
+	listeners: LinkedList<Listener>
 
 	//singleton =============
 	instance : static This = null
 	
-	snew: static func -> This {
-		if(instance)
-			Exception new(This name + " was lonely =)") throw()
-			
-		instance = This new()
-		return instance
-	}
-	
-	get: static func -> This {
+	get: static func -> This{
+		if(!instance) {
+			instance = new()
+		}
 		return instance
 	}
 	
@@ -32,16 +35,11 @@ CInputTask: class extends ITask {
 	
 	init: func ~cinputtask{
 		super()
+		listeners = LinkedList<Listener> new()
 	}
 	
 	start: func -> Bool {
-		
-		//SDL initSubSystem(SDL_INIT_KEYBOARD)
-		keys = SDL getKeyState(keyCount&)
-		//oldKeys = new CMMDynamicBlob<unsigned char>(keyCount);
-		oldKeys = gc_calloc(keyCount,sizeof(UChar))
 		dX = 0 ; dY = 0
-		SDLEvent pump(); SDLEvent pump()
 		return true
 
 	}
@@ -49,70 +47,22 @@ CInputTask: class extends ITask {
 	stop: func {
 		keys = 0
 		oldKeys = 0
-		//SDL quitSubSystem(SDL_INIT_KEYBOARD)
 	}
 	
 	update: func {
-		SDLEvent pump()
-
-		oldButtons = buttons
-		buttons = SDL getRelativeMouseState(dX&,dY&)
-
-		memcpy(oldKeys,keys,sizeof(UChar)*keyCount)
-		keys = SDL getKeyState(keyCount&)
-		
-		//printf("hellow from cinputtask\n")
-	}
-
-	curKey: func (index: Int) -> Bool {
-		return keys[index] != 0
+		while(SDLEvent poll(event&)) {
+			for(listener in listeners) {
+				listener handleEvent(event)
+			}
+		}
 	}
 	
-	oldKey: func (index: Int) -> Bool {
-		return oldKeys[index] != 0
+	handleEvent: func(event: Event) {}
+	
+	regEvent: func (listener: Listener) {
+		listeners add(listener)
 	}
 	
-	keyDown: func(index: Int) -> Bool{
-		return curKey(index) && (!oldKey(index))
+	unRegEvent: func (listener: Listener) {
+		listeners remove(listener)
 	}
-	
-	keyStillDown: func(index: Int) -> Bool{
-		return curKey(index) && (oldKey(index))
-	}
-	
-	keyUp: func(index: Int) -> Bool {
-		return (!curKey(index)) && (oldKey(index))
-	}
-	
-	keyStillUp: func(index: Int) -> Bool {
-		return (!curKey(index)) && (!oldKey(index))
-	}
-	
-	curMouse: func(button: Int) -> Bool {
-		return (buttons & button) != 0
-	}
-	
-	oldMouse: func(button: Int) -> Bool {
-		return (oldButtons & button) != 0
-	}
-	
-	mouseDown: func(button: Int) -> Bool {
-		return curMouse(button) && (!oldMouse(button))
-	}
-	
-	mouseStillDown: func(button: Int) -> Bool {
-		return curMouse(button) && (oldMouse(button))
-	}
-	
-	mouseUp: func(button: Int) -> Bool {
-		return (!curMouse(button)) && (oldMouse(button))
-	}
-	
-	mouseStillUp: func(button: Int) -> Bool {
-		return (!curMouse(button)) && (!oldMouse(button))
-	}
-
-
-
-
-}

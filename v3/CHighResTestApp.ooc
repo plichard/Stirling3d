@@ -1,6 +1,8 @@
 
 use sdl,glew,glu
-import glew,ITask,sdl/Event,CGlobalTimer,CInputTask,CKernel,glu/Glu,CFactory,CProduct
+import glew,ITask,sdl/[Sdl,Event],CGlobalTimer,CInputTask,CKernel,glu/Glu,CFactory,CProduct
+import FFCamera
+import utils/types
 
 abs: extern func(...) -> Int
 
@@ -8,6 +10,7 @@ CHighResTestApp: class extends ITask {
 	
 	monkey : StaticMesh
 	monkey2 : StaticMesh
+	camera : FFCamera
 	wire := false
 	
 	init: func ~cpongtask {
@@ -15,6 +18,9 @@ CHighResTestApp: class extends ITask {
 	}
 
 	start: func -> Bool {
+		CInputTask get() regEvent(this)
+		camera = FFCamera new(Double3 new(5,5,5))
+		
 		//initRandomNumbers()
 		glViewport(0,0,1280,800)
 		glMatrixMode(GL_PROJECTION)
@@ -35,7 +41,7 @@ CHighResTestApp: class extends ITask {
 		glEnable(GL_COLOR_MATERIAL)
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
 		
-		// Somewhere in the initialization part of your program…
+		// Lets enable lighting
 		glEnable(GL_LIGHTING)
 		glEnable(GL_LIGHT0)
 		 
@@ -58,17 +64,11 @@ CHighResTestApp: class extends ITask {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 	    glMatrixMode(GL_MODELVIEW)
 	    glLoadIdentity()
-	    gluLookAt(2,2,2,0,0,0,0,1,0)
-	    
-	    if(CInputTask get() keyDown(SDLK_t)) {
-			wire = !wire
-		}
+	    camera update()
+		camera look()
+	    	   
 		glEnable(GL_DEPTH_TEST)
 		glDisable(GL_BLEND)
-		
-		
-		if(CInputTask get() mouseDown(SDL_BUTTON_LEFT))CKernel get() killAllTasks()
-		
 		
 		if(wire) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE )
@@ -81,5 +81,21 @@ CHighResTestApp: class extends ITask {
 		glPopMatrix()
 	}
 	stop: func {
+		CInputTask get() unRegEvent(this)
+	}
+	
+	handleEvent: func(event: Event) {
+		match( event type ) {
+			case SDL_QUIT => CKernel get() killAllTasks()
+			case SDL_KEYDOWN => handleKeyPress( event key keysym)
+			
+		}
+	}
+	
+	handleKeyPress: func(keysym: Keysym) {
+		match (keysym sym )
+		{
+		case SDLK_ESCAPE => CKernel get() killAllTasks()
+		case SDLK_t => wire = !wire
 	}
 }

@@ -1,9 +1,10 @@
-
-ITask: abstract class {
+import Listener
+ITask: abstract class extends Listener {
 	canKill: Bool
 	priority: Long
 	
 	init: func() {
+		super()
 		canKill = false
 		priority = 5000
 	}

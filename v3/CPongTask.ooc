@@ -99,6 +99,9 @@ CPongTask:class extends ITask {
 	stop: func {
 	}
 	
+	handleEvent: func(event: Event) {
+	}
+	
 	qAbs: func(f: Float) -> Float {
 		return (f > 0)?f:-f
 	}

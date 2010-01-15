@@ -1,5 +1,48 @@
 
+PI := 3.14
 
+Double2: class {
+	x,y: Double
+	init: func(=x,=y)  {
+	}
+}
+
+Double3: class {
+	x,y,z: Double
+	init: func(=x,=y,=z) {
+	}
+	
+	normalize: func {
+		l := length()
+		x /= l
+		y /= l
+		z /= l
+	}
+	
+	length: func -> Double {
+		return sqrt(x*x + y*y + z*z)
+	}
+}
+
+operator * (v1: Double3, n: Double) -> Double3 {
+	return Double3 new(v1 x * n, v1 y * n, v1 z * n)
+}
+
+operator + (v1,v2: Double3) -> Double3 {
+	return Double3 new(v1 x + v2 x, v1 y + v2 y, v1 z + v2 z)
+}
+
+operator - (v1,v2: Double3) -> Double3 {
+	return Double3 new(v1 x - v2 x, v1 y - v2 y, v1 z - v2 z)
+}
+
+operator ^ (v1,v2: Double3) -> Double3 {
+	return Double3 new (
+		v1 y * v2 z - v1 z * v2 y,
+		v1 z * v2 x - v1 x * v2 z,
+		v1 x * v2 y - v2 y * v2 x
+	)
+}
 
 Float2: cover {
 	x,y: Float

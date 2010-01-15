@@ -1,4 +1,4 @@
-import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, CPongTask, CHighResTestApp
+import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, CHighResTestApp
 
 CApplication: class {
 	videoTask: CVideoUpdate
@@ -20,10 +20,10 @@ CApplication: class {
 
 	run: func {
 		
-		globalTimer = CGlobalTimer snew()
+		globalTimer = CGlobalTimer get()
 		globalTimer priority = 10
 		
-		inputTask = CInputTask snew()
+		inputTask = CInputTask get()
 		inputTask priority = 20
 		
 		//pong := CPongTask new()
@@ -32,7 +32,7 @@ CApplication: class {
 		test := CHighResTestApp new()
 		test priority = 100
 		
-		videoTask = CVideoUpdate snew()
+		videoTask = CVideoUpdate get()
 		videoTask priority = 10000
 		
 		kernel := CKernel get()

@@ -10,15 +10,10 @@ CGlobalTimer: class extends ITask {
 	//singleton =============
 	instance : static This = null
 	
-	snew: static func -> This {
-		if(instance)
-			Exception new(This name + " was lonely =)") throw()
-			
-		instance = This new()
-		return instance
-	}
-	
-	get: static func -> This {
+	get: static func -> This{
+		if(!instance) {
+			instance = new()
+		}
 		return instance
 	}
 	//========================
@@ -39,6 +34,9 @@ CGlobalTimer: class extends ITask {
 		thisFrameIndex = SDL getTicks()
 		dT=((thisFrameIndex-lastFrameIndex) as Float)/1000.0
 		//printf("hellow from global timer =)\n")
+	}
+	
+	handleEvent: func(event: Event) {
 	}
 	
 	stop: func {
