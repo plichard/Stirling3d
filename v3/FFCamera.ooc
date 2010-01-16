@@ -27,7 +27,7 @@ FFCamera: class extends Camera {
 		this position = position
 		vectorsFromAngles()
 		
-		speed = 0.01
+		speed = 1
 		sensivity = 0.2
 		
 		keystates put("forward",false)
@@ -36,7 +36,8 @@ FFCamera: class extends Camera {
 		keystates put("strafe_right",false)
 		keystates put("boost",false)
 		
-		SDL WM_GrabInput(SDL_GRAB_ON)
+		///TODO grab input!!!!
+		//SDL WM_GrabInput(SDL_GRAB_ON)
 		SDL showCursor(SDL_DISABLE)
 		target = Double3 new(0,0,0)
 		CInputTask get() regEvent(this)

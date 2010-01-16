@@ -1,3 +1,4 @@
+use math
 import utils/[types,text]
 import io/[FileReader, FileWriter, File]
 import text/StringTokenizer

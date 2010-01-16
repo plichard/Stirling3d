@@ -5,9 +5,11 @@ import utils/types
 import structs/Array
 
 CProduct: abstract class {
-	
 	init: func ~cproduct {
 	}
+	filename: String
+	render: func {}
+	id: Int
 }
 
 MESH := 0
@@ -18,7 +20,7 @@ StaticMesh: class extends CProduct {
 	faces : Array<FaceNoTex>
 	dlist : GLuint = 0
 	
-	init: func ~mesh(filename: String) {
+	init: func ~mesh(=filename) {
 		super()
 		source := FileReader new(filename)
 		nVertices : Int = 0
@@ -64,7 +66,7 @@ StaticMesh: class extends CProduct {
 		glBegin(GL_TRIANGLES)
 		printf("%d faces\n",faces size)
 		for(i in 0..faces size) {
-			glColor3ub(rand() % 255,rand() % 255,rand() % 255)
+			//glColor3ub(rand() % 255,rand() % 255,rand() % 255)
 			glNormal3f(normals[faces[i] v1] x,normals[faces[i] v1] y,normals[faces[i] v1] z)
 			glVertex3f(vertices[faces[i] v1] x,vertices[faces[i] v1] y,vertices[faces[i] v1] z)
 			//printf("%f,%f,%f\n",normals[faces[i] v1] x,normals[faces[i] v1] y,normals[faces[i] v1] z)
@@ -78,6 +80,10 @@ StaticMesh: class extends CProduct {
 			//printf("%f,%f,%f\n",normals[faces[i] v3] x,normals[faces[i] v3] y,normals[faces[i] v3] z)
 		}
 		glEnd()
+	}
+	
+	render: func {
+		glCallList(dlist)
 	}
 }
 

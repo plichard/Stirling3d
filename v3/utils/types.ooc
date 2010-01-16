@@ -22,6 +22,10 @@ Double3: class {
 	length: func -> Double {
 		return sqrt(x*x + y*y + z*z)
 	}
+	
+	toString: func -> String {
+		return "(" + x + "|" + y + "|" + z + ")"
+	}
 }
 
 operator * (v1: Double3, n: Double) -> Double3 {
@@ -41,6 +45,14 @@ operator ^ (v1,v2: Double3) -> Double3 {
 		v1 y * v2 z - v1 z * v2 y,
 		v1 z * v2 x - v1 x * v2 z,
 		v1 x * v2 y - v2 y * v2 x
+	)
+}
+
+operator * (v1,v2: Double3) -> Double3 {
+	return Double3 new (
+		v1 x * v2 x,
+		v1 y * v2 y,
+		v1 z * v2 z
 	)
 }
 

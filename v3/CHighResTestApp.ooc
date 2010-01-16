@@ -3,15 +3,16 @@ use sdl,glew,glu
 import glew,ITask,sdl/[Sdl,Event],CGlobalTimer,CInputTask,CKernel,glu/Glu,CFactory,CProduct
 import FFCamera
 import utils/types
+import World
+import GameObject
 
 abs: extern func(...) -> Int
 
 CHighResTestApp: class extends ITask {
 	
-	monkey : StaticMesh
-	monkey2 : StaticMesh
 	camera : FFCamera
 	wire := false
+	world := World new()
 	
 	init: func ~cpongtask {
 		super()
@@ -19,6 +20,12 @@ CHighResTestApp: class extends ITask {
 
 	start: func -> Bool {
 		CInputTask get() regEvent(this)
+		
+		
+		//world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(rand() % 50 - 25,rand() % 50 - 25,rand() % 50 - 25)))
+		
+		
+		
 		camera = FFCamera new(Double3 new(5,5,5))
 		
 		//initRandomNumbers()
@@ -36,7 +43,6 @@ CHighResTestApp: class extends ITask {
 		//glEnable(GL_FACE_CULL)
 		//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 		
-		monkey = CFactory get() loadStatic(MESH,"models/midres-notex-monkey.s3d")
 		
 		glEnable(GL_COLOR_MATERIAL)
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
@@ -76,9 +82,8 @@ CHighResTestApp: class extends ITask {
 		else {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL )
 		}
-		glPushMatrix()
-		glCallList(monkey dlist)
-		glPopMatrix()
+		
+		world render()
 	}
 	stop: func {
 		CInputTask get() unRegEvent(this)
@@ -97,5 +102,7 @@ CHighResTestApp: class extends ITask {
 		{
 		case SDLK_ESCAPE => CKernel get() killAllTasks()
 		case SDLK_t => wire = !wire
+		case SDLK_p => world save("world_save_2.dat")  //why p? because it's nicely right to o =)
+		case SDLK_o => world load("world_save_2.dat")
 	}
 }

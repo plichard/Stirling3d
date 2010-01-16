@@ -12,6 +12,6 @@ Movable: abstract class {
 	init: func {
 		position = Double3  new(0,0,0)
 		rotation = Double3  new(0,0,0)
-		scale = Double3  new(0,0,0)
+		scale = Double3  new(1,1,1)
 	}
 }

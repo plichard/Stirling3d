@@ -4,6 +4,7 @@ import structs/HashMap
 CFactory: class {
 	
 	meshes := HashMap<StaticMesh> new()
+	id := 0
 	
 	// singleton
 	instance : static This = null
@@ -17,7 +18,7 @@ CFactory: class {
 	init: func {}
 	
 	
-	loadStatic: func(productType: Int, filename: String) -> CProduct{
+	loadStatic: func(productType: Int, filename: String) -> CProduct {
 		match(productType) {
 			case MESH =>  {
 				mesh : StaticMesh = null
@@ -27,6 +28,8 @@ CFactory: class {
 					mesh = StaticMesh new(filename)
 					meshes add(filename, mesh)
 					mesh prepare()
+					mesh id = id
+					id += 1
 				} else {
 					printf("already have %s, returning reference\n",filename)
 				}
@@ -36,5 +39,9 @@ CFactory: class {
 			case TEXTURE => StaticTexture new()
 		}
 		return null
+	}
+	
+	clear: func {
+		meshes clear()
 	}
 }

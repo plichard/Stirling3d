@@ -3,6 +3,8 @@ import sdl/Sdl
 import ITask,Singleton
 import structs/LinkedList
 
+usleep: extern func(...)
+
 CKernel: class {
 	
 	taskList : LinkedList<ITask>
@@ -56,6 +58,7 @@ CKernel: class {
 					taskList remove(task)
 				}
 			}
+			usleep(30000)
 		}
 		return 0
 	}

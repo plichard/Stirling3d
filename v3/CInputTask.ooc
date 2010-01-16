@@ -9,13 +9,9 @@ usleep: extern func(...)
 import Listener
 CInputTask: class extends ITask {
 	
-	keys: UInt8*
-	oldKeys: UInt8*
 	keyCount: Int
 	
 	dX,dY: Int
-	buttons: UInt
-	oldButtons: UInt
 	
 	event: Event
 	
@@ -45,8 +41,6 @@ CInputTask: class extends ITask {
 	}
 	
 	stop: func {
-		keys = 0
-		oldKeys = 0
 	}
 	
 	update: func {
