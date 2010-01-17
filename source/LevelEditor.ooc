@@ -51,6 +51,9 @@ LevelEditor: class extends ITask {
 		preLoad("models/midres-notex-monkey.s3d")
 		preLoad("models/mountains.s3d")
 		preLoad("models/notex-cube.s3d")
+		preLoad("models/basic/mod1.s3d")
+		preLoad("models/basic/mod2.s3d")
+		preLoad("models/basic/mod3.s3d")
 		
 		/*for(i in 0..10){
 			world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(rand() % 20 - 10,rand() % 20 - 10,rand() % 20 - 10)))
