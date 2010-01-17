@@ -117,6 +117,7 @@ World: class {
 	//removes all the objects in the world
 	clean: func {
 		objects clear()
+		CFactory get() clear()
 		}
 	
 	save: func(filename: String) -> Bool {
@@ -127,6 +128,7 @@ World: class {
 			return false
 		}
 		
+		printf("Saving %d meshes...\n",CFactory get() meshes size)
 		target write( CFactory get() meshes size toString())
 		target write("\n")
 		for(mesh in CFactory get() meshes) {
@@ -135,6 +137,7 @@ World: class {
 			target write(mesh filename + "\n")
 		}
 		
+		printf("Saving %d objects...\n",objects size)
 		target write(objects size&,Int size)
 		for(object in objects) {
 			target write(object model id&, Int size)
@@ -151,6 +154,7 @@ World: class {
 			target write(object scale z&,Double size)
 		}
 		printf("Level saved =)\n")
+		target close()
 			
 		return true
 	}
@@ -164,6 +168,7 @@ World: class {
 		}
 		objects clear()
 		CFactory get() clear()
+		
 		fileMeshes := HashMap<String> new()
 		line := readLine(source)
 		nMeshes := 0
@@ -201,11 +206,12 @@ World: class {
 			rot := Double3 new(rx,ry,rz)
 			scl := Double3 new(sx,sy,sz)
 			
-			printf("id: %d, pos: %s, rot: %s, scl: %s\n",id, pos toString(), rot toString(), scl toString())
+			//printf("id: %d, pos: %s, rot: %s, scl: %s\n",id, pos toString(), rot toString(), scl toString())
 			add(GameObject new(fileMeshes get(id toString()),pos,rot,scl))
 		}
-		
+		printf("Loaded %d objects\n",objects size)
 		printf("Level loaded =)\n")
+		source close()
 			
 		return true
 	}

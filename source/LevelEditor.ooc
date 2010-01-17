@@ -5,6 +5,7 @@ import FFCamera
 import utils/types
 import World
 import GameObject
+import structs/LinkedList
 
 abs: extern func(...) -> Int
 
@@ -14,6 +15,10 @@ LevelEditor: class extends ITask {
 	GRAB := 1
 	SCALE := 2
 	ROTATE := 3
+	ADDMODEL := 4
+	
+	currentModelName : Node<String>
+	currentModelType : CProduct
 	
 	//these variables lock directions when editing an object in the world
 	grabLock := Int3 new(0,0,0)  //1 means the direction is avlaible
@@ -32,14 +37,24 @@ LevelEditor: class extends ITask {
 	init: func ~levelEditor {
 		super()
 	}
+	
+	
+	//this function will cache a model type(mainly used for testing)
+	preLoad: func(name: String) {
+		printf("Caching %s...\n",name)
+		CFactory get() loadStatic(MESH,name)
+	}
 
 	start: func -> Bool {
 		CInputTask get() regEvent(this)
 		
-		for(i in 0..10){
+		preLoad("models/midres-notex-monkey.s3d")
+		preLoad("models/mountains.s3d")
+		preLoad("models/notex-cube.s3d")
+		
+		/*for(i in 0..10){
 			world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(rand() % 20 - 10,rand() % 20 - 10,rand() % 20 - 10)))
-		}
-		//world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(10,0,-5)))
+		}*/
 		
 		camera = FFCamera new(Double3 new(5,5,5))
 		
@@ -101,6 +116,11 @@ LevelEditor: class extends ITask {
 		}
 		
 		world render(GL_RENDER)
+		if(editMode == ADDMODEL && currentModelType) {
+			glPushMatrix()
+			currentModelType render()
+			glPopMatrix()
+		}
 		drawMainAxes()
 		drawGridLock()
 		
@@ -182,6 +202,20 @@ LevelEditor: class extends ITask {
 					sclLock  = [0,0,0]
 				} else if(editMode == NONE){
 					world picking(event motion x,event motion y,camera)
+				} else if(editMode == ADDMODEL && currentModelName) {
+					editMode = NONE
+					world add(GameObject new(currentModelName data,Double3 new(0,0,0)))
+				}
+			}
+			case SDL_BUTTON_WHEELUP => {
+				if(editMode == ADDMODEL && currentModelName) {
+					if(currentModelName next) {
+						currentModelName = currentModelName next
+						currentModelType = CFactory get() loadStatic(MESH,currentModelName data)
+					} else if(CFactory get() names size > 0) {
+						currentModelName = CFactory get() names first
+						currentModelType = CFactory get() loadStatic(MESH,currentModelName data)
+					}
 				}
 			}
 		}
@@ -216,7 +250,10 @@ LevelEditor: class extends ITask {
 			}
 			case SDLK_ESCAPE => {
 				editMode = NONE
-				world picked position = backupPos
+				if(world picked)
+					world picked position = backupPos
+				currentModelName = null
+				currentModelType = null
 			}
 			case SDLK_x => {grabLock x = !grabLock x;rotLock x = !rotLock x;sclLock x = !sclLock x}
 			case SDLK_y => {grabLock y = !grabLock y;rotLock y = !rotLock y;sclLock y = !sclLock y}
@@ -238,9 +275,17 @@ LevelEditor: class extends ITask {
 					sclLock  = [0,0,0]
 				}
 			}
+			case SDLK_a => {
+				if(mode){
+					editMode = ADDMODEL
+					currentModelName = CFactory get() names first
+					currentModelType = CFactory get() loadStatic(MESH,currentModelName data)
+				}
+			}
 		}
 		
 	}
+	
 	drawGridLock: func {
 		if(!mode)
 			return
@@ -249,9 +294,6 @@ LevelEditor: class extends ITask {
 			case GRAB => {
 				if(world picked) {
 					if(grabLock x && grabLock y && grabLock z) {
-						//drawGrid(world picked position,Double3 new(0,0,0),Double3 new(1,1,1))  //world xy plane
-						//drawGrid(world picked position,Double3 new(1,0,0),Double3 new(1,1,1))  //world xz plane
-						//drawGrid(world picked position,Double3 new(0,1,1),Double3 new(1,1,1))  //world yz plane
 					}
 					else if(grabLock x && grabLock y) {
 						drawGrid(world picked position,Double3 new(0,0,0),Double3 new(1,1,1))  //world xy plane

@@ -1,9 +1,10 @@
 import CProduct
-import structs/HashMap
+import structs/[HashMap,LinkedList]
 
 CFactory: class {
 	
 	meshes := HashMap<StaticMesh> new()
+	names := LinkedList<String> new()
 	id := 0
 	
 	// singleton
@@ -27,11 +28,12 @@ CFactory: class {
 					printf("loading %s for the first time\n",filename)
 					mesh = StaticMesh new(filename)
 					meshes add(filename, mesh)
+					names add(filename)
 					mesh prepare()
 					mesh id = id
 					id += 1
 				} else {
-					printf("already have %s, returning cached version\n",filename)
+					//printf("already have %s, returning cached version\n",filename)
 				}
 				
 				return mesh	
@@ -43,5 +45,6 @@ CFactory: class {
 	
 	clear: func {
 		meshes clear()
+		id = 0
 	}
 }
