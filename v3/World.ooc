@@ -1,24 +1,103 @@
-import structs/[LinkedList,HashMap]
+use glew,glu
+import glew,glu/Glu
+import structs/[LinkedList,HashMap,Array]
 import GameObject
 import io/[FileWriter,FileReader]
 import CFactory
 import CProduct
 import utils/[types,text]
+import Camera,FFCamera
 
 World: class {
 	
 	objects := LinkedList<GameObject> new()
 	
 	init: func {}
+	id := 0
 	
-	render: func {
-		for(object in objects) {
-			object render()
+	render: func(mode: GLenum)  {
+		if(mode == GL_SELECT) {
+			//printf("rendering in select mode!!!\n")
+			for(object in objects) {
+				glLoadName(object id)
+				//printf("%d",id)
+				object render()
+			}
+			//println()
+		} else {
+			for(object in objects) {
+				object render()
+			}
+		}
+	}
+	
+	picking: func (x,y: Int,cam: Camera)  {
+		BUFSIZE := 512
+		selectBuf : GLuint[BUFSIZE]
+		hits: GLint
+		viewport : GLint[4]
+		
+		
+		glSelectBuffer(BUFSIZE, selectBuf)
+		glGetIntegerv(GL_VIEWPORT, viewport)
+		
+		glRenderMode(GL_SELECT)
+		glInitNames()
+		glPushName(0)
+
+		glMatrixMode(GL_PROJECTION)
+		glPushMatrix()
+			glLoadIdentity()
+			
+			gluPickMatrix(x as GLdouble, (viewport[3] - y) as GLdouble,
+						 5.0, 5.0, viewport)
+			gluPerspective(60, 1280 as Float / 800 as Float, 0.01, 1000)
+			glMatrixMode(GL_MODELVIEW)	
+			//glLoadIdentity()  //
+			//cam look()
+			render(GL_SELECT)
+			glMatrixMode(GL_PROJECTION)
+		glPopMatrix()
+		
+
+		hits = glRenderMode(GL_RENDER)
+		processHits(hits, selectBuf)
+		
+		glMatrixMode(GL_MODELVIEW)
+		glFlush()
+		
+	}
+	
+	processHits: func(hits: GLint, buffer: GLuint*) {
+		i,j: UInt
+		names: GLuint
+		ptr: GLuint*
+		if(hits == 0)
+			return
+		else {
+			printf(".")
+			fflush(stdout)
+			return
+		}
+		printf("hits = %d\n", hits)
+		ptr = buffer as GLuint*
+		for (i in 0..hits) {  /* for each hit  */
+			names = ptr@
+			printf(" number of names for hit = %d\n", names); ptr += 1
+			printf("  z1 is %g;", (ptr@/0x7fffffff) as Float); ptr += 1
+			printf(" z2 is %g\n", (ptr@/0x7fffffff) as Float); ptr += 1
+			printf("   the name is ")
+			for(j in 0..names) { /* for each name */
+				printf("%d ", ptr@); ptr += 1
+			}
+			println()
 		}
 	}
 	
 	add: func(object: GameObject) {
 		objects add(object)
+		object id = id
+		id += 1
 	}
 	
 	

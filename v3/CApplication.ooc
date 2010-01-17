@@ -1,4 +1,4 @@
-import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, CHighResTestApp
+import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, LevelEditor
 
 CApplication: class {
 	videoTask: CVideoUpdate
@@ -29,7 +29,7 @@ CApplication: class {
 		//pong := CPongTask new()
 		//pong priority = 100
 		
-		test := CHighResTestApp new()
+		test := LevelEditor new()
 		test priority = 100
 		
 		videoTask = CVideoUpdate get()

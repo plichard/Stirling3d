@@ -17,6 +17,8 @@ GameObject: class extends Movable {
 	
 	renderBounds := false
 	
+	id: Int
+	
 	init: func ~gameObject {
 		super()
 	}

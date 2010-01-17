@@ -20,6 +20,8 @@ FFCamera: class extends Camera {
 	keyconf := HashMap<Int> new()
 	keystates := HashMap<Bool> new()
 	
+	enabled := true //shall it receive the events from the mouse and wsad keys?
+	
 	init: func ~ffCameraInit (.position) {
 		super()
 		phi = 0
@@ -38,7 +40,7 @@ FFCamera: class extends Camera {
 		
 		///TODO grab input!!!!
 		//SDL WM_GrabInput(SDL_GRAB_ON)
-		SDL showCursor(SDL_DISABLE)
+		
 		target = Double3 new(0,0,0)
 		CInputTask get() regEvent(this)
 	}
@@ -59,6 +61,8 @@ FFCamera: class extends Camera {
 	}
 	
 	handleEvent: func(event: Event) {
+		if(!enabled)
+			return
 		match(event type) {
 			case SDL_MOUSEMOTION => onMouseMotion(event motion)
 			case SDL_KEYDOWN => onKeyDown(event key)
