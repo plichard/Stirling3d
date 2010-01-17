@@ -62,7 +62,7 @@ StaticMesh: class extends CProduct {
 	}
 	
 	draw: func {
-		glColor3ub(255,255,255)
+		//glColor3ub(255,255,255)
 		glBegin(GL_TRIANGLES)
 		printf("%d faces\n",faces size)
 		for(i in 0..faces size) {

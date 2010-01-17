@@ -24,7 +24,10 @@ LevelEditor: class extends ITask {
 	start: func -> Bool {
 		CInputTask get() regEvent(this)
 		
-		world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(3,0,-5)))
+		for(i in 0..10){
+			world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(rand() % 20 - 10,rand() % 20 - 10,rand() % 20 - 10)))
+		}
+		//world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(10,0,-5)))
 		
 		camera = FFCamera new(Double3 new(5,5,5))
 		
@@ -64,7 +67,7 @@ LevelEditor: class extends ITask {
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight)
 		glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight)
 		glLightfv(GL_LIGHT0, GL_POSITION, position)
-		SDL showCursor(SDL_DISABLE)
+		SDL showCursor(SDL_ENABLE)
 		return true
 	}
 	
@@ -73,7 +76,7 @@ LevelEditor: class extends ITask {
 	    glMatrixMode(GL_MODELVIEW)
 	    glLoadIdentity()
 	    camera update()
-		//camera look()
+		camera look()
 	    	   
 		glEnable(GL_DEPTH_TEST)
 		glDisable(GL_BLEND)
@@ -102,12 +105,12 @@ LevelEditor: class extends ITask {
 	}
 	
 	handleMotion: func(event: Event) {
-		world picking(event motion x,event motion y,camera)
+		//world picking(event motion x,event motion y,camera)
 	}
 	
 	handleMouseButton: func(event: Event) {
 		match(event button button) {
-			case SDL_BUTTON_LEFT => {printf("click at (%d,%d)\n",event motion x, event motion y);world picking(event motion x,event motion y,camera)}
+			case SDL_BUTTON_LEFT => {world picking(event motion x,event motion y,camera)}
 		}
 	}
 	

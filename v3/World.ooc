@@ -14,24 +14,27 @@ World: class {
 	
 	init: func {}
 	id := 0
+	pickedID := -1
 	
 	render: func(mode: GLenum)  {
 		if(mode == GL_SELECT) {
-			//printf("rendering in select mode!!!\n")
 			for(object in objects) {
 				glLoadName(object id)
-				//printf("%d",id)
 				object render()
 			}
-			//println()
 		} else {
 			for(object in objects) {
+				if(object id == pickedID) {
+					glColor3ub(255,0,0)
+				} else {
+					glColor3ub(255,255,255)
+				}
 				object render()
 			}
 		}
 	}
 	
-	picking: func (x,y: Int,cam: Camera)  {
+	picking: func (x,y: Int,cam: Camera)  -> Int {
 		BUFSIZE := 512
 		selectBuf : GLuint[BUFSIZE]
 		hits: GLint
@@ -53,45 +56,52 @@ World: class {
 						 5.0, 5.0, viewport)
 			gluPerspective(60, 1280 as Float / 800 as Float, 0.01, 1000)
 			glMatrixMode(GL_MODELVIEW)	
-			//glLoadIdentity()  //
-			//cam look()
+			glLoadIdentity()
+			cam look()
 			render(GL_SELECT)
 			glMatrixMode(GL_PROJECTION)
 		glPopMatrix()
 		
 
 		hits = glRenderMode(GL_RENDER)
-		processHits(hits, selectBuf)
-		
+		//processHits(hits, selectBuf)
 		glMatrixMode(GL_MODELVIEW)
 		glFlush()
 		
+		
+		if(hits > 0) {
+			minz := 0xFFFFFFFF
+			minid := -1
+			for(i in 0..hits) {
+				if(selectBuf[i * 4 + 1] < minz) {
+					minz = selectBuf[i * 4 + 1]
+					minid = selectBuf[i * 4 + 3] as GLubyte
+				}
+			}
+			pickedID = minid
+			return minid
+		} else {
+			pickedID = -1
+			return -1
+		}
+		
+		
 	}
 	
-	processHits: func(hits: GLint, buffer: GLuint*) {
-		i,j: UInt
-		names: GLuint
-		ptr: GLuint*
-		if(hits == 0)
-			return
-		else {
-			printf(".")
-			fflush(stdout)
-			return
-		}
-		printf("hits = %d\n", hits)
-		ptr = buffer as GLuint*
-		for (i in 0..hits) {  /* for each hit  */
-			names = ptr@
-			printf(" number of names for hit = %d\n", names); ptr += 1
-			printf("  z1 is %g;", (ptr@/0x7fffffff) as Float); ptr += 1
-			printf(" z2 is %g\n", (ptr@/0x7fffffff) as Float); ptr += 1
-			printf("   the name is ")
-			for(j in 0..names) { /* for each name */
-				printf("%d ", ptr@); ptr += 1
-			}
-			println()
-		}
+	processHits: func(hits: GLint, names: GLuint*) {
+		printf("%d hits:\n", hits)
+		jayjay := 0x7fffffff
+		for (i in 0..hits) {
+			printf(	"Number: %d\nMin Z: 0x%0x\nMax Z: 0x%0x\nName on stack: %d\n",
+					names[i * 4] as GLubyte,
+					/*(names[i * 4 + 1]) as Float / (jayjay& as Float*)@,
+					(names[i * 4 + 2]) as Float / (jayjay& as Float*)@,*/
+					(names[i * 4 + 1]),
+					(names[i * 4 + 2]),
+					names[i * 4 + 3] as GLubyte)
+				}
+		
+		println()
 	}
 	
 	add: func(object: GameObject) {
