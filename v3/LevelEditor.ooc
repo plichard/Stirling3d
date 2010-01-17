@@ -10,11 +10,23 @@ abs: extern func(...) -> Int
 
 LevelEditor: class extends ITask {
 	
+	NONE := 0
+	GRAB := 1
+	SCALE := 2
+	ROTATE := 3
+	
+	//these variables lock directions when editing an object in the world
+	grabLock := Int3 new(0,0,0)  //1 means the direction is avlaible
+	rotLock := Int3 new(0,0,0)
+	sclLock := Int3 new(0,0,0)
+	
 	camera : FFCamera
 	wire := false
 	world := World new()
 	
 	mode := false  //false means that we are in freefly mode, true is edit mode
+	editMode := NONE
+	backupPos := Double3 new(0,0,0)
 	
 	
 	init: func ~levelEditor {
@@ -89,6 +101,7 @@ LevelEditor: class extends ITask {
 		}
 		
 		world render(GL_RENDER)
+		drawGridLock()
 	}
 	stop: func {
 		CInputTask get() unRegEvent(this)
@@ -105,32 +118,261 @@ LevelEditor: class extends ITask {
 	}
 	
 	handleMotion: func(event: Event) {
-		//world picking(event motion x,event motion y,camera)
+		if(mode && world picked && editMode == GRAB) {
+			mouse := getMouseVector(event motion x,event motion y)
+			moveObject(mouse)
+		}	
+	}
+	
+	moveObject: func(mouse: Double3) {
+		if(grabLock x && grabLock y) {
+			t : Double = (world picked position z-camera position z)/(mouse z-camera position z)
+			Mx : Double = t*(mouse x-camera position x)+ camera position x
+			My : Double = t*(mouse y-camera position y)+ camera position y
+			Mz : Double = world picked position z
+			world picked position = [Mx,My,Mz]
+		}
+		else if(grabLock x && grabLock z) {
+			t : Double = (world picked position y-camera position y)/(mouse y-camera position y)
+			Mx : Double = t*(mouse x-camera position x)+ camera position x
+			My : Double = world picked position y
+			Mz : Double = t*(mouse z-camera position z)+ camera position z
+			world picked position = [Mx,My,Mz]
+		}
+		else if(grabLock y && grabLock z) {
+			t : Double = (world picked position x-camera position x)/(mouse x-camera position x)
+			Mx : Double = world picked position x
+			My : Double = t*(mouse y-camera position y)+ camera position y
+			Mz : Double = t*(mouse z-camera position z)+ camera position z
+			world picked position = [Mx,My,Mz]
+		}
+		else if(grabLock x) {
+			t : Double = (world picked position z-camera position z)/(mouse z-camera position z)
+			Mx : Double = t*(mouse x-camera position x)+ camera position x
+			My : Double = world picked position y
+			Mz : Double = world picked position z
+			world picked position = [Mx,My,Mz]
+		}
+		else if(grabLock y) {
+			t : Double = (world picked position z-camera position z)/(mouse z-camera position z)
+			Mx : Double = world picked position x
+			My : Double = t*(mouse y-camera position y)+ camera position y
+			Mz : Double = world picked position z
+			world picked position = [Mx,My,Mz]
+		}
+		else if(grabLock z) {
+			t : Double = (world picked position x-camera position x)/(mouse x-camera position x)
+			Mx : Double = world picked position x
+			My : Double = world picked position y
+			Mz : Double = t*(mouse z-camera position z)+ camera position z
+			world picked position = [Mx,My,Mz]
+		}
+		
 	}
 	
 	handleMouseButton: func(event: Event) {
 		match(event button button) {
-			case SDL_BUTTON_LEFT => {world picking(event motion x,event motion y,camera)}
+			case SDL_BUTTON_LEFT => {
+				if(editMode == GRAB) {
+					editMode = NONE
+					grabLock = [0,0,0]
+					rotLock  = [0,0,0]
+					sclLock  = [0,0,0]
+				} else if(editMode == NONE){
+					world picking(event motion x,event motion y,camera)
+				}
+			}
 		}
 	}
 	
 	handleKeyPress: func(keysym: Keysym) {
 		match (keysym sym ) {
-			case SDLK_ESCAPE => CKernel get() killAllTasks()
+			case SDLK_q => CKernel get() killAllTasks()
 			case SDLK_t => wire = !wire
 			case SDLK_p => world save("world_save_2.dat")  //why p? because it's nicely right to o =)
 			case SDLK_o => world load("world_save_2.dat") //or "'O'pen"
+			case SDLK_g => {
+				grabLock = [0,0,0]
+				rotLock  = [0,0,0]
+				sclLock  = [0,0,0]
+				if(mode) {
+					editMode = GRAB
+					if(world picked) {
+						backupPos = Double3 new(world picked position)
+					}
+				}
+			}
+			case SDLK_s => {
+				if(mode) {
+					editMode = SCALE
+				}
+			}
+			case SDLK_r => {
+				if(mode) {
+					editMode = ROTATE
+				}
+			}
+			case SDLK_ESCAPE => {
+				editMode = NONE
+				world picked position = backupPos
+			}
+			case SDLK_x => {grabLock x = !grabLock x;rotLock x = !rotLock x;sclLock x = !sclLock x}
+			case SDLK_y => {grabLock y = !grabLock y;rotLock y = !rotLock y;sclLock y = !sclLock y}
+			case SDLK_z => {grabLock z = !grabLock z;rotLock z = !rotLock z;sclLock z = !sclLock z}
+			
 			case SDLK_LSHIFT => {
 				mode = !mode 
 				camera enabled = !(camera enabled)
 				 if(!mode){
 					 SDL showCursor(SDL_DISABLE)  //freefly mode, do not show the now useless cursor
+					 editMode = NONE
+					 
 				 }
 				else {
 					SDL showCursor(SDL_ENABLE)  //show the cursor for editing
+					editMode = NONE
+					grabLock = [0,0,0]
+					rotLock  = [0,0,0]
+					sclLock  = [0,0,0]
 				}
 			}
 		}
 		
+	}
+	drawGridLock: func {
+		if(!mode)
+			return
+			
+		match(editMode) {
+			case GRAB => {
+				if(world picked) {
+					if(grabLock x && grabLock y && grabLock z) {
+						//drawGrid(world picked position,Double3 new(0,0,0),Double3 new(1,1,1))  //world xy plane
+						//drawGrid(world picked position,Double3 new(1,0,0),Double3 new(1,1,1))  //world xz plane
+						//drawGrid(world picked position,Double3 new(0,1,1),Double3 new(1,1,1))  //world yz plane
+					}
+					else if(grabLock x && grabLock y) {
+						drawGrid(world picked position,Double3 new(0,0,0),Double3 new(1,1,1))  //world xy plane
+					}
+					else if(grabLock x && grabLock z) {
+						drawGrid(world picked position,Double3 new(1,0,0),Double3 new(1,1,1))  //world xz plane
+					}
+					else if(grabLock y && grabLock z) {
+						drawGrid(world picked position,Double3 new(0,1,1),Double3 new(1,1,1))  //world yz plane
+					}
+					else if(grabLock x || grabLock y || grabLock z) {
+						drawAxis(world picked position,Double3 new(0,0,0),Double3 new(1,1,1))
+					}
+						
+				}
+			}
+			
+		}
+	}
+	
+	drawAxis: func(pos,rot,scl:Double3) {
+		glPushMatrix()
+		glTranslated(pos x, pos y, pos z)
+		if(rot x) {
+			glRotated(90,1, 0, 0)
+		}
+		if(rot y) {
+			glRotated(90,0, 1, 0)
+		}
+		if(rot z) {
+			glRotated(90,0, 0, 1)
+		}
+		glBegin(GL_LINES)
+			if(grabLock x) {
+				glColor3ub(0,0,0)
+				glVertex3d(-10,0,0)
+				
+				glColor3ub(255,0,0)
+				glVertex3d(0,0,0)
+				glVertex3d(0,0,0)
+				
+				glColor3ub(0,0,0)
+				glVertex3d(10,0,0)
+			} 
+			if(grabLock y) {
+				glColor3ub(0,0,0)
+				glVertex3d(0,-10,0)
+				
+				glColor3ub(0,255,0)
+				glVertex3d(0,0,0)
+				glVertex3d(0,0,0)
+				
+				glColor3ub(0,0,0)
+				glVertex3d(0,10,0)
+			}
+			if(grabLock z) {
+				glColor3ub(0,0,0)
+				glVertex3d(0,0,-10)
+				
+				glColor3ub(0,0,255)
+				glVertex3d(0,0,0)
+				glVertex3d(0,0,0)
+				
+				glColor3ub(0,0,0)
+				glVertex3d(0,0,10)
+			}
+				
+		glEnd()
+		glPopMatrix()
+	}
+	
+	drawGrid: func(pos,rot,scl: Double3) {
+		glPushMatrix()
+		glTranslated(pos x, pos y, pos z)
+		if(rot x) {
+			glRotated(90,1, 0, 0)
+		}
+		if(rot y) {
+			glRotated(90,0, 1, 0)
+		}
+		if(rot z) {
+			glRotated(90,0, 0, 1)
+		}
+		glScaled(scl x, scl y, scl z)
+		
+		glBegin(GL_LINES)
+			for(i in (-5)..6) {
+				glColor3ub(0,0,0)
+				glVertex3d(-5,i,0)
+				
+				glColor3ub(125,125,125)
+				glVertex3d(0,i,0)
+				glVertex3d(0,i,0)
+				
+				glColor3ub(0,0,0)
+				glVertex3d(5,i,0)
+			}
+			
+			for(i in (-5)..6) {
+				glColor3ub(0,0,0)
+				glVertex3d(i,-5,0)
+				
+				glColor3ub(125,125,125)
+				glVertex3d(i,0,0)
+				glVertex3d(i,0,0)
+				
+				glColor3ub(0,0,0)
+				glVertex3d(i,5,0)
+			}
+		glEnd()
+		
+		glPopMatrix()
+	}
+	
+	getMouseVector: func(mousex,mousey: Int) -> Double3 {
+		Bx,By,Bz: GLdouble
+		viewport: GLint[4]
+		mvmatrix: GLdouble[16]
+		projmatrix : GLdouble[16]
+		glGetDoublev(GL_MODELVIEW_MATRIX,mvmatrix )
+		glGetDoublev(GL_PROJECTION_MATRIX,projmatrix )
+		glGetIntegerv(GL_VIEWPORT,viewport )
+		gluUnProject(mousex,viewport[3]-mousey,0, mvmatrix, projmatrix,viewport,Bx&,By&,Bz&)
+		return Double3 new(Bx,By,Bz)
 	}
 }

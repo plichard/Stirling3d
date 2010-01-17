@@ -12,6 +12,12 @@ Double3: class {
 	init: func(=x,=y,=z) {
 	}
 	
+	init: func ~clone(v: This) {
+		x = v x
+		y = v y
+		z = v z
+	}
+	
 	normalize: func {
 		l := length()
 		x /= l
@@ -54,6 +60,12 @@ operator * (v1,v2: Double3) -> Double3 {
 		v1 y * v2 y,
 		v1 z * v2 z
 	)
+}
+
+operator = (v1: Double3, vals: Double*){
+	v1 x = vals[0]
+	v1 y = vals[1]
+	v1 z = vals[2]
 }
 
 Float2: cover {
@@ -146,6 +158,14 @@ Int3: cover {
 		f3 z = z
 		return f3
 	}
+	
+}
+
+
+operator = (i3: Int3,vals: Int*) {
+	i3 x = vals[0]
+	i3 y = vals[1]
+	i3 z = vals[2]
 }
 
 Int2: cover {

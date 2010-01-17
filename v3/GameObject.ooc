@@ -40,6 +40,7 @@ GameObject: class extends Movable {
 	render: func {
 		glPushMatrix()
 		glTranslated(position x, position y, position z)
+		glRotated(1,rotation x, rotation y, rotation z)
 		glScaled(scale x, scale y, scale z)
 		if(model)
 			model render()

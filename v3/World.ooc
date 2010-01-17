@@ -15,6 +15,7 @@ World: class {
 	init: func {}
 	id := 0
 	pickedID := -1
+	picked : GameObject = null
 	
 	render: func(mode: GLenum)  {
 		if(mode == GL_SELECT) {
@@ -23,8 +24,10 @@ World: class {
 				object render()
 			}
 		} else {
+			picked = null
 			for(object in objects) {
 				if(object id == pickedID) {
+					picked = object
 					glColor3ub(255,0,0)
 				} else {
 					glColor3ub(255,255,255)
