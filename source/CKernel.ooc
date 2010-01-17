@@ -1,6 +1,6 @@
 use sdl
 import sdl/Sdl
-import ITask,Singleton
+import ITask
 import structs/LinkedList
 
 usleep: extern func(...)

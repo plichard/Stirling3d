@@ -31,7 +31,7 @@ CFactory: class {
 					mesh id = id
 					id += 1
 				} else {
-					printf("already have %s, returning reference\n",filename)
+					printf("already have %s, returning cached version\n",filename)
 				}
 				
 				return mesh	

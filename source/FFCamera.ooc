@@ -38,8 +38,7 @@ FFCamera: class extends Camera {
 		keystates put("strafe_right",false)
 		keystates put("boost",false)
 		
-		///TODO grab input!!!!
-		//SDL WM_GrabInput(SDL_GRAB_ON)
+		SDL WM_GrabInput(SDL_GRAB_ON)
 		
 		target = Double3 new(0,0,0)
 		CInputTask get() regEvent(this)

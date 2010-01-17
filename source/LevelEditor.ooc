@@ -58,7 +58,7 @@ LevelEditor: class extends ITask {
 		glRenderMode(GL_RENDER) //the level editor starts in the freefly camera mode, therefore no picking, only rendering
 		//glEnable(GL_BLEND)
 		//glEnable(GL_FACE_CULL)
-		//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 		
 		
 		glEnable(GL_COLOR_MATERIAL)
@@ -101,7 +101,9 @@ LevelEditor: class extends ITask {
 		}
 		
 		world render(GL_RENDER)
+		drawMainAxes()
 		drawGridLock()
+		
 	}
 	stop: func {
 		CInputTask get() unRegEvent(this)
@@ -270,6 +272,27 @@ LevelEditor: class extends ITask {
 		}
 	}
 	
+	drawMainAxes: func {
+		glPushMatrix()
+		glBegin(GL_LINES)
+			glColor3ub(128,0,0)
+			glVertex3d(-50,0,0)
+			glColor3ub(255,0,0)
+			glVertex3d(50,0,0)
+			
+			glColor3ub(0,128,0)
+			glVertex3d(0,-50,0)
+			glColor3ub(0,255,0)
+			glVertex3d(0,50,0)
+			
+			glColor3ub(0,0,128)
+			glVertex3d(0,0,-50)
+			glColor3ub(0,0,255)
+			glVertex3d(0,0,50)
+		glEnd()
+		glPopMatrix()
+	}
+	
 	drawAxis: func(pos,rot,scl:Double3) {
 		glPushMatrix()
 		glTranslated(pos x, pos y, pos z)
@@ -282,39 +305,42 @@ LevelEditor: class extends ITask {
 		if(rot z) {
 			glRotated(90,0, 0, 1)
 		}
-		glBegin(GL_LINES)
+		glBegin(GL_LINE_STRIP)
 			if(grabLock x) {
-				glColor3ub(0,0,0)
+				glColor3ub(128,0,0)
+				glVertex3d(-100,0,0)
 				glVertex3d(-10,0,0)
 				
 				glColor3ub(255,0,0)
 				glVertex3d(0,0,0)
-				glVertex3d(0,0,0)
 				
-				glColor3ub(0,0,0)
+				glColor3ub(128,0,0)
 				glVertex3d(10,0,0)
+				glVertex3d(100,0,0)
 			} 
 			if(grabLock y) {
-				glColor3ub(0,0,0)
+				glColor3ub(0,128,0)
+				glVertex3d(0,-100,0)
 				glVertex3d(0,-10,0)
 				
 				glColor3ub(0,255,0)
 				glVertex3d(0,0,0)
-				glVertex3d(0,0,0)
 				
-				glColor3ub(0,0,0)
+				glColor3ub(0,128,0)
 				glVertex3d(0,10,0)
+				glVertex3d(0,100,0)
 			}
 			if(grabLock z) {
-				glColor3ub(0,0,0)
+				glColor3ub(0,0,128)
+				glVertex3d(0,0,-100)
 				glVertex3d(0,0,-10)
 				
 				glColor3ub(0,0,255)
-				glVertex3d(0,0,0)
-				glVertex3d(0,0,0)
-				
-				glColor3ub(0,0,0)
+				glVertex3d(0,0,0)	
+						
+				glColor3ub(0,0,128)
 				glVertex3d(0,0,10)
+				glVertex3d(0,0,100)
 			}
 				
 		glEnd()
@@ -336,23 +362,47 @@ LevelEditor: class extends ITask {
 		glScaled(scl x, scl y, scl z)
 		
 		glBegin(GL_LINES)
-			for(i in (-5)..6) {
-				glColor3ub(0,0,0)
+			/*for(i in (-50)..51) {
+				glColor3ub(64,64,64)
+				glVertex3d(-50,i,-0.01)
+				glVertex3d(50,i,-0.01)
+			}*/
+			
+			/*for(i in 6..51) {
+				glColor3ub(64,64,64)
+				glVertex3d(-50,i,0)
+				glVertex3d(50,i,0)
+			}*/
+			
+			/*for(i in (-50)..51) {
+				glColor3ub(64,64,64)
+				glVertex3d(i,-50,-0.01)
+				glVertex3d(i,50,-0.01)
+			}*/
+			
+			/*for(i in 6..51) {
+				glColor3ub(64,64,64)
+				glVertex3d(i,-50,0)
+				glVertex3d(i,50,0)
+			}*/
+			
+			for(i in (-4)..5) {
+				glColor3ub(64,64,64)
 				glVertex3d(-5,i,0)
 				
-				glColor3ub(125,125,125)
+				glColor3ub(255,255,255)
 				glVertex3d(0,i,0)
 				glVertex3d(0,i,0)
 				
-				glColor3ub(0,0,0)
+				glColor3ub(64,64,64)
 				glVertex3d(5,i,0)
 			}
 			
-			for(i in (-5)..6) {
+			for(i in (-4)..5) {
 				glColor3ub(0,0,0)
 				glVertex3d(i,-5,0)
 				
-				glColor3ub(125,125,125)
+				glColor3ub(255,255,255)
 				glVertex3d(i,0,0)
 				glVertex3d(i,0,0)
 				
@@ -360,6 +410,15 @@ LevelEditor: class extends ITask {
 				glVertex3d(i,5,0)
 			}
 		glEnd()
+		glEnable(GL_BLEND)	
+			glColor4ub(255,255,255,64)
+			glBegin(GL_QUADS)
+				glVertex3d(-5,-5,0)
+				glVertex3d(-5,5,0)
+				glVertex3d(5,5,0)
+				glVertex3d(5,-5,0)
+			glEnd()
+		glDisable(GL_BLEND)
 		
 		glPopMatrix()
 	}
