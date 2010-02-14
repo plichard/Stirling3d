@@ -54,6 +54,9 @@ LevelEditor: class extends ITask {
 		preLoad("models/basic/mod1.s3d")
 		preLoad("models/basic/mod2.s3d")
 		preLoad("models/basic/mod3.s3d")
+		preLoad("models/head.s3d")
+		preLoad("models/terrain1.s3d")
+		preLoad("models/gun.s3d")
 		
 		/*for(i in 0..10){
 			world add(GameObject new("models/midres-notex-monkey.s3d",Double3 new(rand() % 20 - 10,rand() % 20 - 10,rand() % 20 - 10)))
@@ -102,6 +105,7 @@ LevelEditor: class extends ITask {
 	}
 	
 	update: func {
+		glClearColor(0,0,0,0)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 	    glMatrixMode(GL_MODELVIEW)
 	    glLoadIdentity()
