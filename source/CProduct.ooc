@@ -2,7 +2,7 @@ use glew
 import glew
 import io/FileReader
 import utils/types
-import structs/Array
+import structs/ArrayList
 
 CProduct: abstract class {
 	init: func ~cproduct {
@@ -15,9 +15,9 @@ CProduct: abstract class {
 MESH := 0
 
 StaticMesh: class extends CProduct {
-	vertices : Array<Float3>
-	normals : Array<Float3>
-	faces : Array<FaceNoTex>
+	vertices : ArrayList<Float3>
+	normals : ArrayList<Float3>
+	faces : ArrayList<FaceNoTex>
 	dlist : GLuint = 0
 	
 	init: func ~mesh(=filename) {
@@ -33,9 +33,9 @@ StaticMesh: class extends CProduct {
 		
 		printf("%d vertices, %d faces and %d vertex normals\n",nVertices, nFaces, nNormals)
 		
-		vertices = Array<Float3> new(nVertices)
-		normals = Array<Float3> new(nVertices)
-		faces = Array<VFace> new(nFaces)
+		vertices = ArrayList<Float3> new(nVertices)
+		normals = ArrayList<Float3> new(nVertices)
+		faces = ArrayList<VFace> new(nFaces)
 		
 		source read(vertices data,0,Float3 size * nVertices)
 		source read(normals data,0,Float3 size * nVertices)

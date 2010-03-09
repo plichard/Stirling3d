@@ -2,7 +2,7 @@ use math
 import utils/[types,text]
 import io/[FileReader, FileWriter, File]
 import text/StringTokenizer
-import structs/Array
+import structs/ArrayList
 
 
 objtoS3D: func(fromName, toName: String) -> Bool {

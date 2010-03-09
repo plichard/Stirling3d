@@ -5,7 +5,7 @@ import FFCamera
 import utils/types
 import World
 import GameObject
-import structs/LinkedList
+import structs/[LinkedList, ArrayList]
 
 abs: extern func(...) -> Int
 
@@ -123,7 +123,7 @@ LevelEditor: class extends ITask {
 		}
 		
 		world render(GL_RENDER)
-		if(editMode == ADDMODEL && currentModelType) {
+		if(editMode == ADDMODEL && currentModelType != null) {
 			glPushMatrix()
 			currentModelType render()
 			glPopMatrix()
@@ -147,7 +147,7 @@ LevelEditor: class extends ITask {
 	}
 	
 	handleMotion: func(event: Event) {
-		if(mode && world picked && editMode == GRAB) {
+		if(mode && world picked != null && editMode == GRAB) {
 			mouse := getMouseVector(event motion x,event motion y)
 			moveObject(mouse)
 		}	
@@ -290,7 +290,6 @@ LevelEditor: class extends ITask {
 				}
 			}
 		}
-		
 	}
 	
 	drawGridLock: func {
@@ -461,12 +460,12 @@ LevelEditor: class extends ITask {
 		glEnd()
 		glEnable(GL_BLEND)	
 			glColor4ub(255,255,255,64)
-			glBegin(GL_QUADS)
+			/*glBegin(GL_QUADS)
 				glVertex3d(-5,-5,0)
 				glVertex3d(-5,5,0)
 				glVertex3d(5,5,0)
 				glVertex3d(5,-5,0)
-			glEnd()
+			glEnd()*/
 		glDisable(GL_BLEND)
 		
 		glPopMatrix()

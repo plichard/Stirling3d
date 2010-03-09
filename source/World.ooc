@@ -1,6 +1,6 @@
 use glew,glu
 import glew,glu/Glu
-import structs/[LinkedList,HashMap,Array]
+import structs/[LinkedList,HashMap,ArrayList]
 import GameObject
 import io/[FileWriter,FileReader]
 import CFactory
@@ -83,11 +83,10 @@ World: class {
 			}
 			pickedID = minid
 			return minid
-		} else {
-			pickedID = -1
-			return -1
-		}
-		
+		} 
+	
+		pickedID = -1
+		return -1	
 		
 	}
 	

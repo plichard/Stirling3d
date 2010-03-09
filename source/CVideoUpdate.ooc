@@ -21,17 +21,16 @@ CVideoUpdate: class extends ITask {
 	instance : static This = null
 	
 	get: static func -> This{
-		if(!instance) {
-			instance = This new(1280,800,32)
+		if(!(This instance)) {
+			This instance = This new(1280,800,32)
 		}
-		return instance
+		return This instance
 	}
 	
 	//========================
 
 	start: func -> Bool {
-		if(-1 == SDL init(SDL_INIT_EVERYTHING))
-		{
+		if(-1 == SDL init(SDL_INIT_EVERYTHING)){
 			/*CLog::Get().Write(LOG_CLIENT,IDS_GENERIC_SUB_INIT_FAIL,
 			"Video",SDL_GetError());*/
 			CLog get() write(LOG_CLIENT,"Video: " + SDL getError())

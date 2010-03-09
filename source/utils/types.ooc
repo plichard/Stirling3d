@@ -107,7 +107,7 @@ operator += (a,b: Float3) {
 }
 
 operator + (a,b: Float3) -> Float3 {
-	return Float3 new(a x + b x, a y + b y, a z + b z,)
+	return Float3 new(a x + b x, a y + b y, a z + b z)
 }
 
 operator / (a: Float3, d: Float) -> Float3 {

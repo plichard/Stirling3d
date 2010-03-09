@@ -10,10 +10,10 @@ CFactory: class {
 	// singleton
 	instance : static This = null
 	get: static func -> This{
-		if(!instance) {
-			instance = new()
+		if(!(This instance)) {
+			This instance = new()
 		}
-		return instance
+		return This instance
 	}
 	//
 	init: func {}

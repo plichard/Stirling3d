@@ -21,10 +21,10 @@ CInputTask: class extends ITask {
 	instance : static This = null
 	
 	get: static func -> This{
-		if(!instance) {
-			instance = new()
+		if(!(This instance)) {
+			This instance = new()
 		}
-		return instance
+		return This instance
 	}
 	
 	//=========================
@@ -37,7 +37,6 @@ CInputTask: class extends ITask {
 	start: func -> Bool {
 		dX = 0 ; dY = 0
 		return true
-
 	}
 	
 	stop: func {
@@ -51,7 +50,8 @@ CInputTask: class extends ITask {
 		}
 	}
 	
-	handleEvent: func(event: Event) {}
+	handleEvent: func(event: Event) {
+	}
 	
 	regEvent: func (listener: Listener) {
 		listeners add(listener)
@@ -60,3 +60,4 @@ CInputTask: class extends ITask {
 	unRegEvent: func (listener: Listener) {
 		listeners remove(listener)
 	}
+}

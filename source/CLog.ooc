@@ -19,15 +19,9 @@ CLog: class {
 	
 	instance : static This = null
 	
-	snew: static func {
-		if(instance)
-			Exception new(This name + " was lonely =)") throw()
-			
-		instance = This new()
-	}
-	
-	get: static func -> This {
-		return instance
+	get: static func -> This{
+		if(!(This instance))	This instance = This new()
+		return This instance
 	}
 	
 	//=========================

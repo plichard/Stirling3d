@@ -15,11 +15,11 @@ CKernel: class {
 	instance : static This = null
 	
 	get: static func -> This {
-		if(!instance) {
-			instance = new()
+		if(!(This instance)) {
+			This instance = new()
 			printf("Kernel initialized\n")
 		}
-		return instance
+		return This instance
 	}
 	
 	//=========================
