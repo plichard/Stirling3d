@@ -1,4 +1,5 @@
-import CVideoUpdate, CGlobalTimer, CKernel, CInputTask, LevelEditor
+import CVideoUpdate, CGlobalTimer, CKernel, CInputTask
+import applications/functions
 
 CApplication: class {
 	videoTask: CVideoUpdate
@@ -29,8 +30,11 @@ CApplication: class {
 		//pong := CPongTask new()
 		//pong priority = 100
 		
-		test := LevelEditor new()
-		test priority = 100
+		//test := LevelEditor new()
+		//test priority = 100
+		
+		functions := Functions new()
+		functions priority = 100
 		
 		videoTask = CVideoUpdate get()
 		videoTask priority = 10000
@@ -39,7 +43,7 @@ CApplication: class {
 		kernel addTask(globalTimer)
 		kernel addTask(inputTask)
 		kernel addTask(videoTask)
-		kernel addTask(test)	
+		kernel addTask(functions)	
 		kernel execute()
 	}
 }

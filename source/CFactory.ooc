@@ -3,7 +3,7 @@ import structs/[HashMap,LinkedList]
 
 CFactory: class {
 	
-	meshes := HashMap<StaticMesh> new()
+	meshes := HashMap<String,StaticMesh> new()
 	names := LinkedList<String> new()
 	id := 0
 	

@@ -54,7 +54,7 @@ LevelEditor: class extends ITask {
 		preLoad("models/basic/mod1.s3d")
 		preLoad("models/basic/mod2.s3d")
 		preLoad("models/basic/mod3.s3d")
-		preLoad("models/head.s3d")
+		//preLoad("models/head.s3d")
 		preLoad("models/terrain1.s3d")
 		preLoad("models/gun.s3d")
 		
@@ -90,10 +90,10 @@ LevelEditor: class extends ITask {
 		glEnable(GL_LIGHT0)
 		 
 		// Create light components
-		ambientLight: GLfloat[] = [ 0.2, 0.2, 0.2, 1.0 ]
-		diffuseLight: GLfloat[] = [ 0.8, 0.8, 0.8, 1.0 ]
-		specularLight: GLfloat[] = [ 0.5, 0.5, 0.5, 1.0 ]
-		position: GLfloat[] = [ -1.5, 1.0, -1.0, 1.0 ]
+		ambientLight: GLfloat* = [ 0.2, 0.2, 0.2, 1.0 ]
+		diffuseLight: GLfloat* = [ 0.8, 0.8, 0.8, 1.0 ]
+		specularLight: GLfloat* = [ 0.5, 0.5, 0.5, 1.0 ]
+		position: GLfloat* = [ -1.5, 1.0, -1.0, 1.0 ]
 		 
 		// Assign created components to GL_LIGHT0
 		glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight)
@@ -159,42 +159,42 @@ LevelEditor: class extends ITask {
 			Mx : Double = t*(mouse x-camera position x)+ camera position x
 			My : Double = t*(mouse y-camera position y)+ camera position y
 			Mz : Double = world picked position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		else if(grabLock x && grabLock z) {
 			t : Double = (world picked position y-camera position y)/(mouse y-camera position y)
 			Mx : Double = t*(mouse x-camera position x)+ camera position x
 			My : Double = world picked position y
 			Mz : Double = t*(mouse z-camera position z)+ camera position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		else if(grabLock y && grabLock z) {
 			t : Double = (world picked position x-camera position x)/(mouse x-camera position x)
 			Mx : Double = world picked position x
 			My : Double = t*(mouse y-camera position y)+ camera position y
 			Mz : Double = t*(mouse z-camera position z)+ camera position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		else if(grabLock x) {
 			t : Double = (world picked position z-camera position z)/(mouse z-camera position z)
 			Mx : Double = t*(mouse x-camera position x)+ camera position x
 			My : Double = world picked position y
 			Mz : Double = world picked position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		else if(grabLock y) {
 			t : Double = (world picked position z-camera position z)/(mouse z-camera position z)
 			Mx : Double = world picked position x
 			My : Double = t*(mouse y-camera position y)+ camera position y
 			Mz : Double = world picked position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		else if(grabLock z) {
 			t : Double = (world picked position x-camera position x)/(mouse x-camera position x)
 			Mx : Double = world picked position x
 			My : Double = world picked position y
 			Mz : Double = t*(mouse z-camera position z)+ camera position z
-			world picked position = [Mx,My,Mz]
+			world picked position set(Mx,My,Mz)
 		}
 		
 	}
@@ -204,9 +204,9 @@ LevelEditor: class extends ITask {
 			case SDL_BUTTON_LEFT => {
 				if(editMode == GRAB) {
 					editMode = NONE
-					grabLock = [0,0,0]
-					rotLock  = [0,0,0]
-					sclLock  = [0,0,0]
+					grabLock set(0,0,0)
+					rotLock  set(0,0,0)
+					sclLock  set(0,0,0)
 				} else if(editMode == NONE){
 					world picking(event motion x,event motion y,camera)
 				} else if(editMode == ADDMODEL && currentModelName) {
@@ -235,9 +235,9 @@ LevelEditor: class extends ITask {
 			case SDLK_p => world save("world_save_2.dat")  //why p? because it's nicely right to o =)
 			case SDLK_o => world load("world_save_2.dat") //or "'O'pen"
 			case SDLK_g => {
-				grabLock = [0,0,0]
-				rotLock  = [0,0,0]
-				sclLock  = [0,0,0]
+				grabLock set(0,0,0)
+				rotLock  set(0,0,0)
+				sclLock  set(0,0,0)
 				if(mode) {
 					editMode = GRAB
 					if(world picked) {
@@ -277,16 +277,17 @@ LevelEditor: class extends ITask {
 				else {
 					SDL showCursor(SDL_ENABLE)  //show the cursor for editing
 					editMode = NONE
-					grabLock = [0,0,0]
-					rotLock  = [0,0,0]
-					sclLock  = [0,0,0]
+					grabLock set(0,0,0)
+					rotLock  set(0,0,0)
+					sclLock  set(0,0,0)
 				}
 			}
 			case SDLK_a => {
 				if(mode){
 					editMode = ADDMODEL
 					currentModelName = CFactory get() names first
-					currentModelType = CFactory get() loadStatic(MESH,currentModelName data)
+					printf("first: %s\n",currentModelName data as String)
+					currentModelType = CFactory get() loadStatic(MESH,currentModelName data as String)
 				}
 			}
 		}

@@ -17,8 +17,8 @@ FFCamera: class extends Camera {
 	kstrafe_left := false
 	kstrafe_right := false
 	
-	keyconf := HashMap<Int> new()
-	keystates := HashMap<Bool> new()
+	keyconf := HashMap<String,Int> new()
+	keystates := HashMap<String,Bool> new()
 	
 	enabled := true //shall it receive the events from the mouse and wsad keys?
 	

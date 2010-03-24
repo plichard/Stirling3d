@@ -32,6 +32,8 @@ Double3: class {
 	toString: func -> String {
 		return "(" + x + "|" + y + "|" + z + ")"
 	}
+	
+	set: func (=x,=y,=z){}
 }
 
 operator * (v1: Double3, n: Double) -> Double3 {
@@ -158,7 +160,7 @@ Int3: cover {
 		f3 z = z
 		return f3
 	}
-	
+	set: func(=x,=y,=z){}
 }
 
 
